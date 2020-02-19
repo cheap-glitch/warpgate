@@ -30,10 +30,10 @@
 (async function()
 {
 	// Get the personal token of the user
-	const { token } = await browser.storage.sync.get({ token: null });
+	const { token } = await browser.storage.sync.get({ githubPersonalToken: null });
 	if (token === null)
 	{
-		console.warn("No personal token for the GitHub API was found, aborting");
+		console.error("A personal token is needed to connect to the GitHub API");
 		return;
 	}
 
