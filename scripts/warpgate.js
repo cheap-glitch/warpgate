@@ -29,6 +29,11 @@
 
 (async function()
 {
+	/**
+	 * Initialization
+	 * ---------------------------------------------------------------------
+	 */
+
 	// Get the personal token of the user
 	const token = (await browser.storage.sync.get({ githubPersonalToken: null })).githubPersonalToken;
 	if (!token)
@@ -36,6 +41,33 @@
 		console.error("A personal token is needed to connect to the GitHub API");
 		return;
 	}
+
+	// Get the cached repo list
+	let { repos } = await browser.storage.sync.get({ repos: [] });
+
+	/**
+	 * UI callbacks
+	 * ---------------------------------------------------------------------
+	 */
+
+	// Suggest the most visited repos when the keyword is entered in the address bar
+	// @TODO
+
+	// Suggest URLs in the address bar
+	browser.omnibox.onInputChanged.addListener(function(text, suggest)
+	{
+		suggest(repos
+
+			// Filter the suggested items based on the user's input
+			.filter(repo => repo.name.toLowerCase().includes(text.toLowerCase()))
+
+			// Make sure the list has always six items in it
+			.slice(0, 6)
+
+			// Create the suggestions list
+			.map(repo => ({ description: repo.name, content: repo.url }))
+		);
+	});
 
 	// Perform the correct action when a suggestion is selected by the user
 	browser.omnibox.onInputEntered.addListener(function(url, disposition)
@@ -56,10 +88,12 @@
 		}
 	});
 
-	// Get the cached repo list
-	let { repos } = await browser.storage.sync.get({ repos: [] });
+	/**
+	 * Data refreshing
+	 * ---------------------------------------------------------------------
+	 */
 
-	// Update the repo list if needed
+	// Update the list of repos if needed
 	if (await isLocalRepoListOutdated(token, repos))
 		repos = await getRemoteRepoList(token);
 })();
