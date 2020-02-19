@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Warpgate",
-	"description": "@TODO",
+	"description": "A lightweight browser extension to jump to various external bookmarks via the address bar.",
 	"version": "0.0.1",
 	"applications": {
 		"gecko": {

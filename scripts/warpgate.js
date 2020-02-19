@@ -30,8 +30,8 @@
 (async function()
 {
 	// Get the personal token of the user
-	const { token } = await browser.storage.sync.get({ githubPersonalToken: null });
-	if (token === null)
+	const token = (await browser.storage.sync.get({ githubPersonalToken: null })).githubPersonalToken;
+	if (!token)
 	{
 		console.error("A personal token is needed to connect to the GitHub API");
 		return;
@@ -58,7 +58,6 @@
 
 	// Get the cached repo list
 	let { repos } = await browser.storage.sync.get({ repos: [] });
-	console.log('local:', repos);
 
 	// Update the repo list if needed
 	if (await isLocalRepoListOutdated(token, repos))

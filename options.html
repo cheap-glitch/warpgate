@@ -2,12 +2,26 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+
+		<!-- CSS -->
+		<style>
+			label {
+				font-weight: bold;
+			}
+		</style>
 	</head>
 	<body>
-		<!-- GitHub API token -->
-		<label for="input-github-token">
-			Personal token for the GitHub API (<a>generate one</a target="_blank" href="https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user">)
-		</label>
-		<input id="input-github-token" type="text" size="30">
+		<section class="browser-style panel-section panel-section-list">
+
+			<!-- GitHub API token -->
+			<label for="input-github-token">Personal token for the GitHub API</label>
+			<input id="input-github-token" type="text" size="30">
+			<p>Don't have a personal token? <a target="_blank" href="https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user">Generate one</a>.</p>
+
+			<div class="panel-section-separator"></div>
+
+		</section>
+
+		<script src="scripts/options.js"></script>
 	</body>
 </html>

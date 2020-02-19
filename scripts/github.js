@@ -33,14 +33,12 @@ async function getRemoteRepoList(token)
 			}
 		`);
 
-		if (data === null) return;
+		if (!data) return;
 
 		repos     = [...repos, ...data.viewer.starredRepositories.edges.map(edge => ({ name: edge.node.nameWithOwner, url: edge.node.url }))];
 		endCursor = data.viewer.starredRepositories.pageInfo.endCursor;
 
 	} while(data.viewer.starredRepositories.pageInfo.hasNextPage);
-
-	console.log('remote:', repos);
 
 	// Update the local data
 	await browser.storage.sync.set({ repos });
@@ -65,7 +63,7 @@ async function isLocalRepoListOutdated(token, repos)
 		}
 	`);
 
-	return data === null
+	return !data
 	    || repos.length != data.viewer.starredRepositories.totalCount
 	    || repos[0].url != data.viewer.starredRepositories.edges[0].node.url;
 }
