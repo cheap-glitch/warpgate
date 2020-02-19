@@ -1,0 +1,12 @@
+{
+  "description": "A lightweight browser extension to jump to various external bookmarks via the address bar.",
+  "scripts": {
+    "lint": "web-ext lint && eslint '**/*.js'",
+    "serve": "cross-env GTK_THEME=Numix:light web-ext run --firefox-profile default --url about:debugging#/runtime/this-firefox"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-smarter-tabs": "^1.1.0"
+  }
+}

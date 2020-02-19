@@ -1,0 +1,7 @@
+
+#
+# .gitignore
+#
+
+/build/
+/node_modules/

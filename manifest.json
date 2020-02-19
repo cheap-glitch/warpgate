@@ -1,0 +1,24 @@
+{
+	"manifest_version": 2,
+	"name": "Warpgate",
+	"description": "@TODO",
+	"version": "0.0.1",
+	"applications": {
+		"gecko": {
+			"id": "warpgate@cheap-glitch.org"
+		}
+	},
+	"developer" : {
+		"name": "cheap glitch",
+		"url": "https://github.com/cheap-glitch"
+	},
+	"permissions": [
+		"storage"
+	],
+	"background": {
+		"scripts": ["scripts/github.js", "scripts/warpgate.js"]
+	},
+	"omnibox": {
+		"keyword": "@"
+	}
+}
