@@ -1,6 +1,6 @@
 
 /**
- * scripts/options.js
+ * src/options.js
  */
 
 "use strict";

@@ -1,6 +1,6 @@
 
 /**
- * scripts/storage.js
+ * src/storage.js
  */
 
 /**

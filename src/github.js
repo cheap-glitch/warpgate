@@ -1,6 +1,6 @@
 
 /**
- * scripts/github.js
+ * src/github.js
  */
 
 "use strict";
