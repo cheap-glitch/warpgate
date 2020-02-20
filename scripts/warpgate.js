@@ -34,11 +34,9 @@
 	 * ---------------------------------------------------------------------
 	 */
 
-	// Get the cached repo list
-	let { repos } = await browser.storage.sync.get({ repos: [] });
-
-	// Get the personal token of the user
-	const token = (await browser.storage.sync.get({ githubPersonalToken: null })).githubPersonalToken;
+	let   githubRepos          = await getStorageValue('githubRepos',          [],              v => Array.isArray(v));
+	const githubToken          = await getStorageValue('githubPersonalToken',  null,            v => typeof v == 'string');
+	const githubSearchRepoName = await getStorageValue('githubSearchRepoName', 'nameWithOwner', v => ['nameWithOwner', 'nameOnly'].includes(v));
 
 	// Set the message displayed at the top of the suggestions list
 	browser.omnibox.setDefaultSuggestion({ description: "🚀💫 Preparing for warp…" });
@@ -54,16 +52,18 @@
 	// Suggest URLs in the address bar
 	browser.omnibox.onInputChanged.addListener(function(text, suggest)
 	{
-		suggest(repos
+		if (!githubRepos.length) return;
+
+		suggest(githubRepos
+
+			// Build the list of suggestions
+			.map(repo => ({ description: githubSearchRepoName == 'nameOnly' ? repo.name.split('/')[1] : repo.name, content: repo.url }))
 
 			// Filter the suggested items based on the user's input
-			.filter(repo => repo.name.toLowerCase().includes(text.toLowerCase()))
+			.filter(repo => repo.description.toLowerCase().includes(text.toLowerCase()))
 
-			// Make sure the list has always six items in it
+			// Make sure the list doesn't have more than six items in it
 			.slice(0, 6)
-
-			// Create the suggestions list
-			.map(repo => ({ description: repo.name, content: repo.url }))
 		);
 	});
 
@@ -94,10 +94,19 @@
 	 * ---------------------------------------------------------------------
 	 */
 
-	if (token)
+	async function updateRepoList()
 	{
 		// Update the list of repos if needed
-		if (await isLocalRepoListOutdated(token, repos))
-			repos = await getRemoteRepoList(token);
+		if (await isLocalRepoListOutdated(githubToken, githubRepos))
+		{
+			githubRepos = await getRemoteRepoList(githubToken);
+			await setStorageValue('githubRepos', githubRepos);
+		}
+	}
+
+	if (githubToken)
+	{
+		await updateRepoList();
+		window.setInterval(updateRepoList, 10*60*1000);
 	}
 })();

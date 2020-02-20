@@ -40,9 +40,6 @@ async function getRemoteRepoList(token)
 
 	} while(data.viewer.starredRepositories.pageInfo.hasNextPage);
 
-	// Update the local data
-	await browser.storage.sync.set({ repos });
-
 	return repos;
 }
 
@@ -73,8 +70,10 @@ async function isLocalRepoListOutdated(token, repos)
  */
 async function queryGitHubAPI(token, query)
 {
-	let res = null;
+	let res  = null;
+	let json = null;
 
+	// Query the API
 	try {
 		res = await fetch('https://api.github.com/graphql', {
 			method:  'POST',
@@ -87,8 +86,20 @@ async function queryGitHubAPI(token, query)
 		});
 	}
 	catch (err) {
+		console.error(err);
+
 		return null;
 	}
 
-	return (await res.json()).data;
+	// Extract the JSON data from the body of the response
+	try {
+		json = await res.json();
+	}
+	catch (err) {
+		console.error(err);
+
+		return null;
+	}
+
+	return json.data;
 }

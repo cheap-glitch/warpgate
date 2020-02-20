@@ -21,7 +21,7 @@
 				text-align: left;
 			}
 
-			.settings-info {
+			.preferences-info {
 				font-size: 0.9rem;
 			}
 		</style>
@@ -41,18 +41,18 @@
 			</div>
 
 			<!-- Search settings -->
-			<h4>Settings</h4>
+			<h4>Preferences</h4>
 			<div class="panel-formElements-item">
 				<p>Search and display:&ensp;</p>
-				<input  id="githubShowRepoOwner-yes" name="githubShowRepoOwner" type="radio" checked>
-				<label for="githubShowRepoOwner-yes">Repo name and owner</label>
-				<input  id="githubShowRepoOwner-no"  name="githubShowRepoOwner" type="radio">
-				<label for="githubShowRepoOwner-no" >Repo name only</label>
+				<input  id="githubSearchRepoName:nameWithOwner" name="githubSearchRepoName" type="radio" checked>
+				<label for="githubSearchRepoName:nameWithOwner">Repo name and owner</label>
+				<input  id="githubSearchRepoName:nameOnly"      name="githubSearchRepoName" type="radio">
+				<label for="githubSearchRepoName:nameOnly">     Repo name only</label>
 			</div>
 
 			<p></p>
 			<div class="panel-section-separator"></div>
-			<p class="settings-info"><em>Your settings are automatically saved upon modification.</em></p>
+			<p class="preferences-info">💾 ✅ <em>Your settings are automatically saved upon modification.</em></p>
 			<p>
 				Got a suggestion for a new service to connect?
 				<a target="_blank" href="https://github.com/cheap-glitch/warpgate/issues/new">Open a new issue on GitHub</a>
@@ -61,6 +61,7 @@
 			</p>
 		</section>
 
+		<script src="scripts/storage.js"></script>
 		<script src="scripts/options.js"></script>
 	</body>
 </html>

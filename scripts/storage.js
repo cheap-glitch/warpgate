@@ -9,17 +9,16 @@
  */
 async function getStorageValue(key, defaultValue, validator)
 {
-	let wrap = null;
+	let value = null;
 
 	try {
-		wrap = await browser.storage.sync.get(key);
+		value = await browser.storage.sync.get(key);
 	}
 	catch (err) {
+		console.error(err);
+
 		return defaultValue;
 	}
-
-	// Unwrap the value
-	const { value } = wrap;
 
 	return validator(value[key]) ? value[key] : defaultValue;
 }
@@ -31,11 +30,9 @@ async function getStorageValue(key, defaultValue, validator)
 async function setStorageValue(key, value)
 {
 	try {
-		await browser.storage.sync.set({ key: value });
+		await browser.storage.sync.set({ [key]: value });
 	}
 	catch (err) {
-		return false;
+		console.error(err);
 	}
-
-	return true;
 }

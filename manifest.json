@@ -13,6 +13,7 @@
 		"url": "https://github.com/cheap-glitch"
 	},
 	"permissions": [
+    "alarms",
 		"storage"
 	],
   "icons": {
@@ -20,7 +21,7 @@
     "96": "icons/96x96.png"
   },
 	"background": {
-		"scripts": ["scripts/github.js", "scripts/warpgate.js"]
+		"scripts": ["scripts/storage.js", "scripts/github.js", "scripts/warpgate.js"]
 	},
   "options_ui": {
     "page": "options.html",
