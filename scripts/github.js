@@ -19,16 +19,16 @@ async function getRemoteRepoList(token)
 		data = await queryGitHubAPI(token, `
 			viewer {
 			    starredRepositories(${endCursor ? `after: "${endCursor}",` : ''} first: 100, orderBy: { field: STARRED_AT, direction: DESC }) {
-				edges {
-				    node {
-					nameWithOwner
-					url
-				    }
-				}
-				pageInfo {
-				    endCursor
-				    hasNextPage
-				}
+			        edges {
+			            node {
+			                nameWithOwner
+			                url
+			            }
+			        }
+			        pageInfo {
+			            endCursor
+			            hasNextPage
+			        }
 			    }
 			}
 		`);
@@ -56,9 +56,9 @@ async function isLocalRepoListOutdated(token, repos)
 		viewer {
 		    starredRepositories(first: 1, orderBy: { field: STARRED_AT, direction: DESC }) {
 		        totalCount
-			edges {
-			    node { url }
-			}
+		        edges {
+		            node { url }
+		        }
 		    }
 		}
 	`);
@@ -80,8 +80,9 @@ async function queryGitHubAPI(token, query)
 			method:  'POST',
 			body:    `{ "query": "query {${query.replace(/"/g, '\\"').replace(/\n|\t/g, ' ').replace(/ {2,}/g, ' ')}}" }`,
 			headers: {
-				'Content-Type':   'application/json',
+				'User-Agent':     'desktop:org.cheap-glitch@warpgate:v0.0.1',
 				'Authorization':  `bearer ${token}`,
+				'Content-Type':   'application/json',
 			},
 		});
 	}
