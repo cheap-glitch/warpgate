@@ -105,6 +105,21 @@ import { getRemoteRepoList, isLocalRepoListOutdated } from './github.js'
 		}
 	}
 
+	// Force a refresh of the data when the corresponding keyboard command is sent
+	browser.commands.onCommand.addListener(async function(command)
+	{
+		if (command != 'refresh-data') return;
+
+		// Update the data & send a notification to alert the user
+		await updateRepoList();
+		await browser.notifications.create('notif-data-refreshed', {
+			type:     'basic',
+			title:    'Warp targets updated! 👍',
+			message:  'The warp targets have been successfully updated.'
+		})
+	});
+
+	// Refresh the local data every 10 minutes
 	if (githubToken)
 	{
 		await updateRepoList();
