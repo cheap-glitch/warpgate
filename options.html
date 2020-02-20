@@ -1,25 +1,64 @@
 <!DOCTYPE html>
+
+<!-- warpgate/options.html -->
+
 <html>
 	<head>
 		<meta charset="utf-8">
-
-		<!-- CSS -->
 		<style>
-			label {
-				font-weight: bold;
+			h4 {
+				margin-bottom: 0;
+			}
+
+			.panel-formElements-item-vertical-layout {
+				display: block;
+			}
+
+			.panel-formElements-item-vertical-layout label {
+				display: block;
+				margin-bottom: 8px;
+
+				text-align: left;
+			}
+
+			.settings-info {
+				font-size: 0.9rem;
 			}
 		</style>
 	</head>
 	<body>
-		<section class="browser-style panel-section panel-section-list">
+		<section class="browser-style panel-section panel-section-formElements">
 
-			<!-- GitHub API token -->
-			<label for="input-github-token">Personal token for the GitHub API</label>
-			<input id="input-github-token" type="text" size="30">
-			<p>Don't have a personal token? <a target="_blank" href="https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user">Generate one</a>.</p>
+			<h2>GitHub stars</h2>
 
+			<!-- API token -->
+			<div class="panel-formElements-item panel-formElements-item-vertical-layout">
+				<label for="githubPersonalToken">
+					<strong>Personal token for the GitHub API</strong>
+					(Don't have a personal token? <a target="_blank" href="https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user">Generate one</a>)
+				</label>
+				<input  id="githubPersonalToken" type="text" size="50">
+			</div>
+
+			<!-- Search settings -->
+			<h4>Settings</h4>
+			<div class="panel-formElements-item">
+				<p>Search and display:&ensp;</p>
+				<input  id="githubShowRepoOwner-yes" name="githubShowRepoOwner" type="radio" checked>
+				<label for="githubShowRepoOwner-yes">Repo name and owner</label>
+				<input  id="githubShowRepoOwner-no"  name="githubShowRepoOwner" type="radio">
+				<label for="githubShowRepoOwner-no" >Repo name only</label>
+			</div>
+
+			<p></p>
 			<div class="panel-section-separator"></div>
-
+			<p class="settings-info"><em>Your settings are automatically saved upon modification.</em></p>
+			<p>
+				Got a suggestion for a new service to connect?
+				<a target="_blank" href="https://github.com/cheap-glitch/warpgate/issues/new">Open a new issue on GitHub</a>
+				or
+				<a href="mailto:cheap.glitch@gmail.com">drop us a line</a>!
+			</p>
 		</section>
 
 		<script src="scripts/options.js"></script>
