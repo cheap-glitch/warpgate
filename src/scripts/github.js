@@ -1,14 +1,12 @@
 
 /**
- * src/github.js
+ * scripts/github.js
  */
-
-"use strict";
 
 /**
  * Fetch the full list of starred repos from the GitHub API
  */
-async function getRemoteRepoList(token)
+export async function getRemoteRepoList(token)
 {
 	let repos     = [];
 	let data      = null;
@@ -46,7 +44,7 @@ async function getRemoteRepoList(token)
 /**
  * Check for changes in the list of starred repos
  */
-async function isLocalRepoListOutdated(token, repos)
+export async function isLocalRepoListOutdated(token, repos)
 {
 	// Fetch the number of starred repos and the URL of the last starred repo the GitHub API
 	const data = await queryGitHubAPI(token, `

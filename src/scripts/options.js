@@ -1,9 +1,9 @@
 
 /**
- * src/options.js
+ * scripts/options.js
  */
 
-"use strict";
+import { getStorageValue, setStorageValue } from './storage.js'
 
 (async function()
 {

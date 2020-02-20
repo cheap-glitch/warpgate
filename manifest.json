@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Warpgate",
-	"description": "A lightweight browser extension to jump to various external bookmarks via the address bar.",
+	"description": "Jump to various external bookmarks via the address bar.",
 	"version": "0.0.1",
 	"applications": {
 		"gecko": {
@@ -21,10 +21,10 @@
     "96": "icons/96x96.png"
   },
 	"background": {
-		"scripts": ["src/storage.js", "src/github.js", "src/warpgate.js"]
+		"page": "src/pages/background.html"
 	},
   "options_ui": {
-    "page": "options.html",
+    "page": "src/pages/options.html",
     "browser_style": true,
     "chrome_style": true
   },

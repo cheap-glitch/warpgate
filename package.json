@@ -15,7 +15,7 @@
   "homepage": "https://github.com/cheap-glitch/warpgate#readme",
   "scripts": {
     "lint": "web-ext lint && eslint '**/*.js'",
-    "serve": "cross-env GTK_THEME=Numix:light web-ext run --firefox-profile default --url about:debugging#/runtime/this-firefox"
+    "serve": "cross-env GTK_THEME=Numix:light web-ext run --firefox-profile dev --keep-profile-changes --url about:debugging#/runtime/this-firefox"
   },
   "devDependencies": {
     "cross-env": "^7.0.0",

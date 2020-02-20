@@ -25,7 +25,8 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-"use strict";
+import { getStorageValue, setStorageValue           } from './storage.js'
+import { getRemoteRepoList, isLocalRepoListOutdated } from './github.js'
 
 (async function()
 {

@@ -3,6 +3,6 @@
 # .gitignore
 #
 
-/banner/
 /build/
 /node_modules/
+/src/banner/
