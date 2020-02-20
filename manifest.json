@@ -15,6 +15,10 @@
 	"permissions": [
 		"storage"
 	],
+  "icons": {
+    "48": "icons/48x48.png",
+    "96": "icons/96x96.png"
+  },
 	"background": {
 		"scripts": ["scripts/github.js", "scripts/warpgate.js"]
 	},

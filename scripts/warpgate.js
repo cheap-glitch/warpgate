@@ -34,16 +34,14 @@
 	 * ---------------------------------------------------------------------
 	 */
 
-	// Get the personal token of the user
-	const token = (await browser.storage.sync.get({ githubPersonalToken: null })).githubPersonalToken;
-	if (!token)
-	{
-		console.error("A personal token is needed to connect to the GitHub API");
-		return;
-	}
-
 	// Get the cached repo list
 	let { repos } = await browser.storage.sync.get({ repos: [] });
+
+	// Get the personal token of the user
+	const token = (await browser.storage.sync.get({ githubPersonalToken: null })).githubPersonalToken;
+
+	// Set the message displayed at the top of the suggestions list
+	browser.omnibox.setDefaultSuggestion({ description: "🚀💫 Preparing for warp…" });
 
 	/**
 	 * UI callbacks
@@ -72,6 +70,9 @@
 	// Perform the correct action when a suggestion is selected by the user
 	browser.omnibox.onInputEntered.addListener(function(url, disposition)
 	{
+		// Ignore the first suggestion (info message)
+		if (!url.startsWith('https://')) return;
+
 		switch (disposition)
 		{
 			case 'currentTab':
@@ -93,7 +94,10 @@
 	 * ---------------------------------------------------------------------
 	 */
 
-	// Update the list of repos if needed
-	if (await isLocalRepoListOutdated(token, repos))
-		repos = await getRemoteRepoList(token);
+	if (token)
+	{
+		// Update the list of repos if needed
+		if (await isLocalRepoListOutdated(token, repos))
+			repos = await getRemoteRepoList(token);
+	}
 })();
