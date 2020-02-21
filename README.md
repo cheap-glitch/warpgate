@@ -15,8 +15,7 @@ in a third-party service or web app.
 
 ## F.A.Q.
 
-### What about things like saved  Reddit posts, Pocket items, tweet collections,
-etc ?
+### What about things like saved  Reddit posts, Pocket items, tweet collections, etc ?
 Those URLs are more akin to archived files: they're saved for a potential use at
 an  unknown later  point, not  for regular  visits. Warpgate  focuses on  giving
 instant access  to more frequently visited  URLs which are closer  to in-browser
@@ -35,5 +34,4 @@ notify of the success of the operation.
 See the full changelog [here](https://github.com/cheap-glitch/warpgate/releases).
 
 ## License
-This software is distributed under the [GNU GPL v3.0](https://spdx.org/licenses/
-GPL-3.0.html).
+This software is distributed under the [GNU GPL v3.0](https://spdx.org/licenses/GPL-3.0.html).
