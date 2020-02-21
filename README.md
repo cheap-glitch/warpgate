@@ -4,13 +4,13 @@
 
 <div align="center">
 	<img src="https://badgen.net/github/license/cheap-glitch/warpgate" alt="license badge">
-	<img src="https://badgen.net/github/release/cheap-glitch/warpgate?color=green" alt="latest release badge">
+	<img src="https://badgen.net/github/release/cheap-glitch/warpgate" alt="latest release badge">
 </div>
 
 #### Table of contents
  * [Installation](#installation)
  * [Configuration](#configuration)
- * [F.A.Q.](#fag)
+ * [F.A.Q.](#faq)
  * [Changelog](#changelog)
  * [License](#license)
 
