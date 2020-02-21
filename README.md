@@ -1,4 +1,18 @@
-# warpgate
+<p align="center">
+	<img src="https://raw.githubusercontent.com/cheap-glitch/warpgate/master/docs/banner.png" alt="banner">
+</p>
+
+<div align="center">
+	<img src="https://badgen.net/github/license/cheap-glitch/warpgate" alt="license badge">
+	<img src="https://badgen.net/github/release/cheap-glitch/warpgate?color=green" alt="latest release badge">
+</div>
+
+#### Table of contents
+ * [Installation](#installation)
+ * [Configuration](#configuration)
+ * [F.A.Q.](#fag)
+ * [Changelog](#changelog)
+ * [License](#license)
 
 **Warpgate** is  a browser extension which  enables a quick and  painless way to
 access "external bookmarks", i.e.  URLs that have been pinned/starred/bookmarked
@@ -15,13 +29,13 @@ in a third-party service or web app.
 
 ## F.A.Q.
 
-### What about things like saved  Reddit posts, Pocket items, tweet collections, etc ?
+### What about things like saved  Reddit posts, Pocket items, tweet collections, etc?
 Those URLs are more akin to archived files: they're saved for a potential use at
 an  unknown later  point, not  for regular  visits. Warpgate  focuses on  giving
 instant access  to more frequently visited  URLs which are closer  to in-browser
 bookmarks.
 
-### What are the required permissions for ?
+### What are the required permissions for?
 The **storage** permission is  needed to keep the list of  URLs in the browser's
 long-term memory  and avoid  flooding third-party  services with  requests every
 time you enter something in the address bar.
