@@ -25,8 +25,8 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getStorageValue, setStorageValue           } from './storage.js'
-import { getRemoteRepoList, isLocalRepoListOutdated } from './github.js'
+import { getStorageValue } from './storage.js'
+import { getGithubRepos  } from './github.js'
 
 (async function()
 {
@@ -35,33 +35,36 @@ import { getRemoteRepoList, isLocalRepoListOutdated } from './github.js'
 	 * ---------------------------------------------------------------------
 	 */
 
-	let   githubRepos          = await getStorageValue('githubRepos',          [],              v => Array.isArray(v));
-	const githubToken          = await getStorageValue('githubPersonalToken',  null,            v => typeof v == 'string');
-	const githubSearchRepoName = await getStorageValue('githubSearchRepoName', 'nameWithOwner', v => ['nameWithOwner', 'nameOnly'].includes(v));
+	const targets = {
+		github: {
+			token:          await getStorageValue('githubPersonalToken',  null,            v => typeof v == 'string'),
+			searchRepoName: await getStorageValue('githubSearchRepoName', 'nameWithOwner', v => ['nameWithOwner', 'nameOnly'].includes(v)),
+		}
+	};
+
+	// Initialize the list of all possible suggestions
+	let suggestions = await generateSuggestionsList(targets);
 
 	// Set the message displayed at the top of the suggestions list
-	browser.omnibox.setDefaultSuggestion({ description: "🚀💫 Preparing for warp…" });
+	browser.omnibox.setDefaultSuggestion({ description: "🚀💫 Warp in progress…" });
 
 	/**
 	 * UI callbacks
 	 * ---------------------------------------------------------------------
 	 */
 
-	// Suggest the most visited repos when the keyword is entered in the address bar
+	// Suggest the most visited URLs when the keyword is entered in the address bar
 	// @TODO
 
 	// Suggest URLs in the address bar
 	browser.omnibox.onInputChanged.addListener(function(text, suggest)
 	{
-		if (!githubRepos.length) return;
+		if (!suggestions.length) return;
 
-		suggest(githubRepos
-
-			// Build the list of suggestions
-			.map(repo => ({ description: githubSearchRepoName == 'nameOnly' ? repo.name.split('/')[1] : repo.name, content: repo.url }))
+		suggest(suggestions
 
 			// Filter the suggested items based on the user's input
-			.filter(repo => repo.description.toLowerCase().includes(text.toLowerCase()))
+			.filter(item => item.description.toLowerCase().includes(text.trim().toLowerCase()))
 
 			// Make sure the list doesn't have more than six items in it
 			.slice(0, 6)
@@ -71,7 +74,7 @@ import { getRemoteRepoList, isLocalRepoListOutdated } from './github.js'
 	// Perform the correct action when a suggestion is selected by the user
 	browser.omnibox.onInputEntered.addListener(function(url, disposition)
 	{
-		// Ignore the first suggestion (info message)
+		// Ignore the first suggestion (the info message)
 		if (!url.startsWith('https://')) return;
 
 		switch (disposition)
@@ -95,34 +98,57 @@ import { getRemoteRepoList, isLocalRepoListOutdated } from './github.js'
 	 * ---------------------------------------------------------------------
 	 */
 
-	async function updateRepoList()
-	{
-		// Update the list of repos if needed
-		if (await isLocalRepoListOutdated(githubToken, githubRepos))
-		{
-			githubRepos = await getRemoteRepoList(githubToken);
-			await setStorageValue('githubRepos', githubRepos);
-		}
-	}
-
-	// Force a refresh of the data when the corresponding keyboard command is sent
+	// Force a refresh of the local data when the corresponding keyboard command is sent
 	browser.commands.onCommand.addListener(async function(command)
 	{
-		if (command != 'refresh-data') return;
+		if (command == 'refresh-data')
+		{
+			suggestions = await generateSuggestionsList(targets);
 
-		// Update the data & send a notification to alert the user
-		await updateRepoList();
-		await browser.notifications.create('notif-data-refreshed', {
-			type:     'basic',
-			title:    'Warp targets updated! 👍',
-			message:  'The warp targets have been successfully updated.'
-		})
+			await browser.notifications.create('notif-data-refreshed', {
+				type:     'basic',
+				title:    'Warp targets updated! 👍',
+				message:  'The warp targets have been successfully updated.'
+			})
+		}
 	});
 
 	// Refresh the local data every 10 minutes
-	if (githubToken)
-	{
-		await updateRepoList();
-		window.setInterval(updateRepoList, 10*60*1000);
-	}
+	window.setInterval(async () => suggestions = await generateSuggestionsList(targets), 10*60*1000);
 })();
+
+/**
+ * Helpers
+ * =====================================================================
+ */
+
+async function generateSuggestionsList(targets)
+{
+	let suggestions = [];
+
+	for (const [target, settings] of Object.entries(targets))
+	{
+		switch (target)
+		{
+			/**
+			 * GitHub starred repos
+			 */
+			case 'github':
+				suggestions = [
+					...suggestions,
+					...(await getGithubRepos(settings.token))
+						// Build the list of suggestions
+						.map(repo => ({
+							content:     repo.url,
+							description: settings.searchRepoName == 'nameOnly'
+							             ? repo.name.split('/')[1]
+							             : repo.name,
+						}))
+
+				];
+				break;
+		}
+	}
+
+	return suggestions;
+}

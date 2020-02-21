@@ -14,7 +14,7 @@
   "author": "cheap glitch <cheap.glitch@gmail.com> (https://github.com/cheap-glitch)",
   "homepage": "https://github.com/cheap-glitch/warpgate#readme",
   "scripts": {
-    "lint": "web-ext lint && eslint '**/*.js'",
+    "lint": "eslint '**/*.js' && web-ext lint",
     "serve": "cross-env GTK_THEME=Numix:light web-ext run --firefox-profile dev --keep-profile-changes --url about:debugging#/runtime/this-firefox"
   },
   "devDependencies": {
