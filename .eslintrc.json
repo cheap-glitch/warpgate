@@ -20,6 +20,8 @@
 
 	"extends": "eslint:recommended",
 
+  "ignorePatterns": ["src/scripts/browser-polyfill.js"],
+
 	"rules": {
 		"no-mixed-spaces-and-tabs":  ["warn", "smart-tabs"],
 		"smarter-tabs/smarter-tabs": "warn"
