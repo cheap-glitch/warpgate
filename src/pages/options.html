@@ -35,7 +35,7 @@
 			<div class="panel-formElements-item panel-formElements-item-vertical-layout">
 				<label for="githubPersonalToken">
 					<strong>Personal token for the GitHub API</strong>
-					(Don't have a personal token? <a target="_blank" href="https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user">Generate one</a>)
+					(Don't have a personal token? <a target="_blank" rel="noopener" href="https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user">Generate one</a>)
 				</label>
 				<input  id="githubPersonalToken" type="text" size="50">
 			</div>
@@ -55,12 +55,13 @@
 			<p class="preferences-info">💾 ✅ <em>Your settings are automatically saved upon modification.</em></p>
 			<p>
 				Got a suggestion for a new service to connect?
-				<a target="_blank" href="https://github.com/cheap-glitch/warpgate/issues/new">Open a new issue on GitHub</a>
+				<a target="_blank" rel="noopener" href="https://github.com/cheap-glitch/warpgate/issues/new?labels=enhancement&template=feature_request.md">Open a new issue on GitHub</a>
 				or
 				<a href="mailto:cheap.glitch@gmail.com">drop us a line</a>!
 			</p>
 		</section>
 
-		<script src="../scripts/options.js" type="module"></script>
+		<script src="../scripts/browser-polyfill.js" type="module"></script>
+		<script src="../scripts/options.js"          type="module"></script>
 	</body>
 </html>

@@ -3,6 +3,7 @@
 # .gitignore
 #
 
+*.zip
+/banner/
 /build/
 /node_modules/
-/src/banner/

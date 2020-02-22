@@ -35,15 +35,8 @@ import { getGithubRepos  } from './github.js'
 	 * ---------------------------------------------------------------------
 	 */
 
-	const targets = {
-		github: {
-			token:          await getStorageValue('githubPersonalToken',  null,            v => typeof v == 'string'),
-			searchRepoName: await getStorageValue('githubSearchRepoName', 'nameWithOwner', v => ['nameWithOwner', 'nameOnly'].includes(v)),
-		}
-	};
-
-	// Initialize the list of all possible suggestions
-	let suggestions = await generateSuggestionsList(targets);
+	// Initialize the list of all possible targets
+	let targets = await generateTargets();
 
 	// Set the message displayed at the top of the suggestions list
 	browser.omnibox.setDefaultSuggestion({ description: "🚀💫 Warp in progress…" });
@@ -59,14 +52,14 @@ import { getGithubRepos  } from './github.js'
 	// Suggest URLs in the address bar
 	browser.omnibox.onInputChanged.addListener(function(text, suggest)
 	{
-		if (!suggestions.length) return;
+		if (!targets.length) return;
 
-		suggest(suggestions
+		suggest(targets
 
-			// Filter the suggested items based on the user's input
-			.filter(item => item.description.toLowerCase().includes(text.trim().toLowerCase()))
+			// Filter the suggested targets based on the user's input
+			.filter(target => target.description.toLowerCase().includes(text.trim().toLowerCase()))
 
-			// Make sure the list doesn't have more than six items in it
+			// Make sure the list doesn't have more than six suggestions in it
 			.slice(0, 6)
 		);
 	});
@@ -103,7 +96,7 @@ import { getGithubRepos  } from './github.js'
 	{
 		if (command == 'refresh-data')
 		{
-			suggestions = await generateSuggestionsList(targets);
+			targets = await generateTargets();
 
 			await browser.notifications.create('notif-data-refreshed', {
 				type:     'basic',
@@ -114,7 +107,7 @@ import { getGithubRepos  } from './github.js'
 	});
 
 	// Refresh the local data every 10 minutes
-	window.setInterval(async () => suggestions = await generateSuggestionsList(targets), 10*60*1000);
+	window.setInterval(async () => targets = await generateTargets(), 10*60*1000);
 })();
 
 /**
@@ -122,33 +115,42 @@ import { getGithubRepos  } from './github.js'
  * =====================================================================
  */
 
-async function generateSuggestionsList(targets)
+async function generateTargets()
 {
-	let suggestions = [];
+	const sources = {
+		github: {
+			token:          await getStorageValue('githubPersonalToken',  null,            v => typeof v == 'string'),
+			searchRepoName: await getStorageValue('githubSearchRepoName', 'nameWithOwner', v => ['nameWithOwner', 'nameOnly'].includes(v)),
+		},
 
-	for (const [target, settings] of Object.entries(targets))
+		reddit: {
+		},
+
+		twitter: {
+		},
+	};
+
+	let targets = [];
+	for (const [source, settings] of Object.entries(sources))
 	{
-		switch (target)
+		switch (source)
 		{
 			/**
 			 * GitHub starred repos
 			 */
 			case 'github':
-				suggestions = [
-					...suggestions,
-					...(await getGithubRepos(settings.token))
-						// Build the list of suggestions
-						.map(repo => ({
-							content:     repo.url,
-							description: settings.searchRepoName == 'nameOnly'
-							             ? repo.name.split('/')[1]
-							             : repo.name,
-						}))
-
+				targets = [
+					...targets,
+					...(await getGithubRepos(settings.token)).map(repo => ({
+						content:     repo.url,
+						description: settings.searchRepoName == 'nameOnly'
+							     ? repo.name.split('/')[1]
+							     : repo.name,
+					}))
 				];
 				break;
 		}
 	}
 
-	return suggestions;
+	return targets;
 }

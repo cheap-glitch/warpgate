@@ -5,7 +5,7 @@
 	"version": "0.0.1",
 	"applications": {
 		"gecko": {
-			"id": "warpgate@cheap-glitch.org"
+			"id": "warpgate--dev@cheap-glitch.org"
 		}
 	},
 	"developer" : {
