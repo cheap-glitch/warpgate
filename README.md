@@ -9,10 +9,10 @@
 
 #### Table of contents
  * [Installation](#installation)
- * [Configuration](#configuration)
+   * [Configuration](#configuration)
+ * [Usage](#usage)
  * [F.A.Q.](#faq)
- * [Changelog](#changelog)
- * [License](#license)
+ * [Changelog, Acknowledgements & License](#changelog)
 
 **Warpgate** is  a browser extension which  enables a quick and  painless way to
 access "external bookmarks", i.e.  URLs that have been pinned/starred/bookmarked
@@ -24,7 +24,10 @@ in a third-party service or web app.
 ## Installation
 @TODO
 
-## Configuration
+### Configuration
+@TODO
+
+## Usage
 @TODO
 
 ## F.A.Q.
@@ -46,6 +49,10 @@ notify of the success of the operation.
 
 ## Changelog
 See the full changelog [here](https://github.com/cheap-glitch/warpgate/releases).
+
+## Acknowledgements
+The font  used for the banner  is [VAL](https://www.fontfabric.com/fonts/val) by
+[FontFabric](https://www.fontfabric.com).
 
 ## License
 This software is distributed under the [GNU GPL v3.0](https://spdx.org/licenses/GPL-3.0.html).
