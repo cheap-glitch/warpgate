@@ -2,7 +2,7 @@
   "private": true,
   "name": "warpgate",
   "description": "A lightweight browser extension to jump to various external bookmarks via the address bar.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "license": "LGPL-3.0-only",
   "repository": {
     "type": "git",
