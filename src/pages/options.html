@@ -21,13 +21,26 @@
 				text-align: left;
 			}
 
+			.update-message,
 			.preferences-info {
 				font-size: 0.9rem;
+			}
+
+			.update-message {
+				margin: 0;
+				padding: 0;
+
+				opacity: 0;
+			}
+
+			.update-message.is-visible {
+				opacity: 1;
 			}
 		</style>
 	</head>
 	<body>
 		<section class="browser-style panel-section panel-section-formElements">
+			<p id="update-message" class="update-message">🛠️🚀 Updating warp targets…</p>
 
 			<h2>Starred GitHub repos</h2>
 

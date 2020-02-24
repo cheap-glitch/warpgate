@@ -95,6 +95,17 @@ import { getGithubRepos  } from './github.js'
 
 	// Refresh the local data every 10 minutes
 	window.setInterval(async () => targets = await generateTargets(), 10*60*1000);
+
+	// Refresh the data when an option is modified
+	browser.runtime.onMessage.addListener(async function(message, _, sendResponse)
+	{
+		if (message != '[options.js][update targets]') return;
+
+		targets = await generateTargets();
+
+    		await (new Promise(resolve => setTimeout(resolve, 800)));
+		sendResponse('[warpgate.js][targets updated]');
+	});
 })();
 
 /**
