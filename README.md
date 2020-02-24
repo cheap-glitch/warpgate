@@ -26,13 +26,14 @@ in a third-party service or web app.
 @TODO
 
 ## Configuration
-Go   the  preferences   page   ([about:addons](about:addons)   >  *Warpgate*   >
-*Preferences*) to setup the extension.
+Go  the preferences  page (*Add-ons  Manager* >  *Warpgate* >  *Preferences*) to
+setup the extension.
 
-### Starred GitHub repos
+#### Starred GitHub repos
 Create a new personal token by going to [this page](https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user)
 and clicking  on **Generate token**  at the bottom. Copy-paste  the alphanumeric
 code in the corresponding field, wait for  the targets to update, and that's it!
+
 You can  now jump  to any  of your  starred GitHub  repos. The  suggestions will
 update themselves when you unstar a repo or star a new one.
 
