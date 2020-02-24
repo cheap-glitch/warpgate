@@ -26,7 +26,7 @@ in a third-party service or web app.
 @TODO
 
 ## Configuration
-Go  the   preferences  page  (*<a  href="about:addons">Add-ons   Manager</a>*  >
+Go  the   preferences  page  (<a  href="about:addons">Add-ons   Manager</a>  >
 *Warpgate* > *Preferences*) to setup the extension.
 
 #### Starred GitHub repos
