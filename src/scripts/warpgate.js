@@ -103,7 +103,7 @@ import { getGithubRepos  } from './github.js'
 
 		targets = await generateTargets();
 
-    		await (new Promise(resolve => setTimeout(resolve, 800)));
+		await (new Promise(resolve => setTimeout(resolve, 800)));
 		sendResponse('[warpgate.js][targets updated]');
 	});
 })();

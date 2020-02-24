@@ -26,7 +26,7 @@ import { getStorageValue, setStorageValue } from './storage.js'
 	}));
 })();
 
-async function updateTargets(state)
+async function updateTargets()
 {
 	document.getElementById('update-message').classList.add('is-visible');
 	await browser.runtime.sendMessage('[options.js][update targets]');
