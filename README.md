@@ -9,7 +9,8 @@
 
 #### Table of contents
  * [Installation](#installation)
-   * [Configuration](#configuration)
+ * [Configuration](#configuration)
+   * [Starred GitHub repos](#starred-github-repos)
  * [Usage](#usage)
  * [F.A.Q.](#faq)
  * [Changelog, Acknowledgements & License](#changelog)
@@ -24,11 +25,23 @@ in a third-party service or web app.
 ## Installation
 @TODO
 
-### Configuration
-@TODO
+## Configuration
+Go   the  preferences   page   ([about:addons](about:addons)   >  *Warpgate*   >
+*Preferences*) to setup the extension.
+
+### Starred GitHub repos
+Create a new personal token by going to [this page](https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user)
+and clicking  on **Generate token**  at the bottom. Copy-paste  the alphanumeric
+code in the corresponding field, wait for  the targets to update, and that's it!
+You can  now jump  to any  of your  starred GitHub  repos. The  suggestions will
+update themselves when you unstar a repo or star a new one.
 
 ## Usage
-@TODO
+Enter the  prefix `@` in  the address  bar, followed by  a space and  the search
+string. Warpgate will suggest matching targets based on your settings.
+
+The warp targets are  updated every 10 minutes, but if for  some reason you want
+an immediate refresh, press `Alt + W` on your keyboard.
 
 ## F.A.Q.
 
@@ -55,4 +68,4 @@ The font  used for the banner  is [VAL](https://www.fontfabric.com/fonts/val) by
 [FontFabric](https://www.fontfabric.com).
 
 ## License
-This software is distributed under the [GNU LGPL 3.0](https://spdx.org/licenses/LGPL-3.0.html).
+This software is distributed under the [GNU LGPL 3.0](https://spdx.org/licenses/LGPL-3.0-only.html).
