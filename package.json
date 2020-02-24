@@ -3,7 +3,7 @@
   "name": "warpgate",
   "description": "A lightweight browser extension to jump to various external bookmarks via the address bar.",
   "version": "0.0.1",
-  "license": "GPL-3.0-only",
+  "license": "LGPL-3.0-only",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cheap-glitch/warpgate.git"
@@ -15,8 +15,8 @@
   "homepage": "https://github.com/cheap-glitch/warpgate#readme",
   "scripts": {
     "lint": "eslint '**/*.js' && web-ext lint",
-    "serve": "cross-env GTK_THEME=Numix:light web-ext run --firefox-profile dev --keep-profile-changes --url about:debugging#/runtime/this-firefox",
-    "postinstall": "cp node_modules/webextension-polyfill/dist/browser-polyfill.min.js src/scripts/browser-polyfill.js"
+    "postinstall": "cp node_modules/webextension-polyfill/dist/browser-polyfill.min.js src/scripts/browser-polyfill.js",
+    "serve": "cross-env GTK_THEME=Numix:light web-ext run --firefox-profile dev --keep-profile-changes --url about:debugging#/runtime/this-firefox"
   },
   "devDependencies": {
     "cross-env": "^7.0.0",

@@ -55,4 +55,4 @@ The font  used for the banner  is [VAL](https://www.fontfabric.com/fonts/val) by
 [FontFabric](https://www.fontfabric.com).
 
 ## License
-This software is distributed under the [GNU GPL v3.0](https://spdx.org/licenses/GPL-3.0.html).
+This software is distributed under the [GNU LGPL 3.0](https://spdx.org/licenses/LGPL-3.0.html).
