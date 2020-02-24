@@ -26,8 +26,8 @@ in a third-party service or web app.
 @TODO
 
 ## Configuration
-Go  the preferences  page (*Add-ons  Manager* >  *Warpgate* >  *Preferences*) to
-setup the extension.
+Go the preferences  page (`about:addons` > *Warpgate* >  *Preferences*) to setup
+the extension.
 
 #### Starred GitHub repos
 Create a new personal token by going to [this page](https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user)
