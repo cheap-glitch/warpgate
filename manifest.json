@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Warpgate",
 	"description": "Jump to various external bookmarks via the address bar.",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"applications": {
 		"gecko": {
 			"id": "warpgate--dev@cheap-glitch.org"
