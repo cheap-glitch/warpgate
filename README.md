@@ -23,7 +23,8 @@ in a third-party service or web app.
 > services are welcomed!
 
 ## Installation
-@TODO
+[Firefox](https://addons.mozilla.org/en-US/firefox/addon/warpgate) | Chrome (not
+yet available) | Opera (not yet available)
 
 ## Configuration
 Go the preferences  page (`about:addons` > *Warpgate* >  *Preferences*) to setup
@@ -40,6 +41,8 @@ update themselves when you unstar a repo or star a new one.
 ## Usage
 Enter the  prefix `@` in  the address  bar, followed by  a space and  the search
 string. Warpgate will suggest matching targets based on your settings.
+
+![usage demo](https://raw.githubusercontent.com/cheap-glitch/warpgate/master/docs/demo.gif)
 
 The warp targets are  updated every 10 minutes, but if for  some reason you want
 an immediate refresh, press `Alt + W` on your keyboard.
