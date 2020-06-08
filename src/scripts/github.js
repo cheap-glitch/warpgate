@@ -10,15 +10,21 @@ import { getStorageValue, setStorageValue } from './storage.js'
  */
 export async function getGithubRepos(token)
 {
-	if (!token) return [];
+	let repos = await getStorageValue('local', 'github:repos', [], v => Array.isArray(v));
 
-	let repos = await getStorageValue('github.repos', [], v => Array.isArray(v));
+	console.info('Updating GitHub repos:', repos);
+
+	if (!token)
+	{
+		console.error('No token found for the GitHub API!');
+		return repos;
+	}
 
 	// Update the list of repos if needed
 	if (token && await isLocalRepoListOutdated(token, repos))
 	{
 		repos = await getStarredReposList(token);
-		await setStorageValue('github.repos', repos);
+		await setStorageValue('local', 'github:repos', repos);
 	}
 
 	return repos;
