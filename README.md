@@ -56,13 +56,6 @@ an immediate refresh, press `Alt + W` on your keyboard.
 
 ## F.A.Q.
 
-### What about things like saved  Reddit posts, Pocket items, tweet collections, etc?
-
-Those URLs are more akin to archived files: they're saved for a potential use at
-an  unknown later  point, not  for regular  visits. Warpgate  focuses on  giving
-instant access  to more frequently visited  URLs which are closer  to in-browser
-bookmarks.
-
 ### What are the required permissions for?
 
 The **storage** permission is  needed to keep the list of  URLs in the browser's
@@ -72,6 +65,13 @@ time you enter something in the address bar.
 The **notifications**  is needed  to, well, send  notifications. It's  only used
 once, when  the local  data is forcefully  refreshed by pressing  `Alt +  W`, to
 notify of the success of the operation.
+
+### What about things like saved  Reddit posts, Pocket items, tweet collections, etc?
+
+Those URLs are more akin to archived files: they're saved for a potential use at
+an  unknown later  point, not  for regular  visits. Warpgate  focuses on  giving
+instant access  to more frequently visited  URLs which are closer  to in-browser
+bookmarks.
 
 
 ## Changelog

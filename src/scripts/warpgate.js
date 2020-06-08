@@ -41,10 +41,13 @@ import { getGithubRepos  } from './github.js'
 	{
 		if (!targets.length) return;
 
+		// Split the user input to create a list of keywords
+		const keywords = text.trim().toLowerCase().split(' ');
+
 		suggest(targets
 
 			// Filter the suggested targets based on the user's input
-			.filter(target => target.description.toLowerCase().includes(text.trim().toLowerCase()))
+			.filter(target => keywords.every(keyword => target.description.toLowerCase().includes(keyword)))
 
 			// Make sure the list doesn't have more than six suggestions in it
 			.slice(0, 6)
