@@ -51,11 +51,14 @@ async function isLocalRepoListOutdated(token, repos)
 		}
 	`);
 
-	return !data
-		// Return true if the number of starred repos has changed,
-		|| repos.length != data.viewer.starredRepositories.totalCount
-		// or if the latest repo isn't the same
-		|| repos[0].url != data.viewer.starredRepositories.edges[0].node.url;
+	if (!data)
+	{
+		console.error('Failed to query GitHub API!');
+		return true;
+	}
+
+	// Return true if the number of starred repos has changed, or if the latest repo isn't the same
+	return (repos.length != data.viewer.starredRepositories.totalCount) || (repos[0].node.url != data.viewer.starredRepositories.edges[0].node.url);
 }
 
 /**
