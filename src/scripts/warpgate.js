@@ -86,12 +86,18 @@ import { getGithubRepos  } from './github.js'
 	{
 		if (command == 'refresh-data')
 		{
+			await browser.notifications.create('notif-data-refreshed', {
+				type:    'basic',
+				title:   'Updating warp targets ⌛',
+				message: 'Please wait a moment...'
+			})
+
 			targets = await generateTargets();
 
 			await browser.notifications.create('notif-data-refreshed', {
-				type:     'basic',
-				title:    'Warp targets updated! 👍',
-				message:  'The warp targets have been successfully updated.'
+				type:    'basic',
+				title:   'Warp targets updated! 👍',
+				message: 'The warp targets have been successfully updated.'
 			})
 		}
 	});
