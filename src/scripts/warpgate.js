@@ -19,7 +19,7 @@ import { getGithubRepos  } from './github.js'
 {
 	/**
 	 * Initialization
-	 * ---------------------------------------------------------------------
+	 * =====================================================================
 	 */
 
 	// Initialize the list of all possible targets
@@ -30,11 +30,8 @@ import { getGithubRepos  } from './github.js'
 
 	/**
 	 * UI callbacks
-	 * ---------------------------------------------------------------------
+	 * =====================================================================
 	 */
-
-	// Suggest the most visited URLs when the keyword is entered in the address bar
-	// @TODO
 
 	// Suggest URLs in the address bar
 	browser.omnibox.onInputChanged.addListener(function(text, suggest)
@@ -60,25 +57,18 @@ import { getGithubRepos  } from './github.js'
 		// Ignore the first suggestion (the info message)
 		if (!url.startsWith('https://')) return;
 
+		// Open the URL according to the user's choice
 		switch (disposition)
 		{
-			case 'currentTab':
-				browser.tabs.update({ url });
-				break;
-
-			case 'newForegroundTab':
-				browser.tabs.create({ url });
-				break;
-
-			case 'newBackgroundTab':
-				browser.tabs.create({ url, active: false });
-				break;
+			case 'currentTab':       browser.tabs.update({ url });                break;
+			case 'newForegroundTab': browser.tabs.create({ url });                break;
+			case 'newBackgroundTab': browser.tabs.create({ url, active: false }); break;
 		}
 	});
 
 	/**
 	 * Data refreshing
-	 * ---------------------------------------------------------------------
+	 * =====================================================================
 	 */
 
 	// Force a refresh of the local data when the corresponding keyboard command is sent
@@ -106,58 +96,30 @@ import { getGithubRepos  } from './github.js'
 	window.setInterval(async () => targets = await generateTargets(), 10*60*1000);
 
 	// Refresh the data when an option is modified
-	browser.runtime.onMessage.addListener(async function(message, _, sendResponse)
+	browser.runtime.onMessage.addListener(async function(message)
 	{
-		if (message != '[options.js][update targets]') return;
-
-		targets = await generateTargets();
-
-		await (new Promise(resolve => setTimeout(resolve, 800)));
-		sendResponse('[warpgate.js][targets updated]');
+		if (message == 'refresh-data')
+			targets = await generateTargets();
 	});
 })();
 
 /**
- * Helpers
- * =====================================================================
+ * Generate a list of targets for the address bar
  */
-
 async function generateTargets()
 {
-	const sources = {
-		github: {
-			token:          await getStorageValue('githubPersonalToken',  null,            v => typeof v == 'string'),
-			searchRepoName: await getStorageValue('githubSearchRepoName', 'nameWithOwner', v => ['nameWithOwner', 'nameOnly'].includes(v)),
-		},
-
-		reddit: {
-		},
-
-		twitter: {
-		},
-	};
-
 	let targets = [];
-	for (const [source, settings] of Object.entries(sources))
-	{
-		switch (source)
-		{
-			/**
-			 * GitHub starred repos
-			 */
-			case 'github':
-				targets = [
-					...targets,
-					...(await getGithubRepos(settings.token)).map(repo => ({
-						content:     repo.url,
-						description: settings.searchRepoName == 'nameOnly'
-							     ? repo.name.split('/')[1]
-							     : repo.name,
-					}))
-				];
-				break;
-		}
-	}
+
+	/**
+	 * GitHub
+	 */
+	const token        = await getStorageValue('github.token',        null, v => typeof v == 'string');
+	const fullRepoName = await getStorageValue('github.fullRepoName', true, v => typeof v == 'boolean');
+
+	targets.push.call(null, (await getGithubRepos(token)).map(repo => ({
+		content:     repo.node.url,
+		description: fullRepoName ? repo.node.nameWithOwner : repo.node.nameWithOwner.split('/')[1],
+	})));
 
 	return targets;
 }

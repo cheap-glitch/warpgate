@@ -12,13 +12,13 @@ export async function getGithubRepos(token)
 {
 	if (!token) return [];
 
-	let repos = await getStorageValue('githubRepos', [], v => Array.isArray(v));
+	let repos = await getStorageValue('github.repos', [], v => Array.isArray(v));
 
 	// Update the list of repos if needed
 	if (token && await isLocalRepoListOutdated(token, repos))
 	{
 		repos = await getStarredReposList(token);
-		await setStorageValue('githubRepos', repos);
+		await setStorageValue('github.repos', repos);
 	}
 
 	return repos;
@@ -35,15 +35,19 @@ async function isLocalRepoListOutdated(token, repos)
 		    starredRepositories(first: 1, orderBy: { field: STARRED_AT, direction: DESC }) {
 		        totalCount
 		        edges {
-		            node { url }
+		            node {
+		                url
+		            }
 		        }
 		    }
 		}
 	`);
 
 	return !data
-	    || repos.length != data.viewer.starredRepositories.totalCount
-	    || repos[0].url != data.viewer.starredRepositories.edges[0].node.url;
+		// Return true if the number of starred repos has changed,
+		|| repos.length != data.viewer.starredRepositories.totalCount
+		// or if the latest repo isn't the same
+		|| repos[0].url != data.viewer.starredRepositories.edges[0].node.url;
 }
 
 /**
@@ -76,7 +80,7 @@ async function getStarredReposList(token)
 
 		if (!data) return;
 
-		repos     = [...repos, ...data.viewer.starredRepositories.edges.map(edge => ({ name: edge.node.nameWithOwner, url: edge.node.url }))];
+		repos.push.call(null, data.viewer.starredRepositories.edges);
 		endCursor = data.viewer.starredRepositories.pageInfo.endCursor;
 
 	} while(data.viewer.starredRepositories.pageInfo.hasNextPage);
@@ -95,12 +99,14 @@ async function queryAPI(token, query)
 	// Query the API
 	try {
 		res = await fetch('https://api.github.com/graphql', {
-			method:  'POST',
-			body:    `{ "query": "query {${query.replace(/"/g, '\\"').replace(/\n|\t/g, ' ').replace(/ {2,}/g, ' ')}}" }`,
+			method: 'POST',
+
+			body: `{ "query": "query {${query.replace(/"/g, '\\"').replace(/\n|\t/g, ' ').replace(/ {2,}/g, ' ')}}" }`,
+
 			headers: {
-				'User-Agent':     'desktop:org.cheap-glitch@warpgate:v0.0.1',
-				'Authorization':  `bearer ${token}`,
-				'Content-Type':   'application/json',
+				'User-Agent':    'desktop:org.cheap-glitch@warpgate:v1.2.0',
+				'Authorization': `bearer ${token}`,
+				'Content-Type':  'application/json',
 			},
 		});
 	}

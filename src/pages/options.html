@@ -46,21 +46,21 @@
 
 			<!-- API token -->
 			<div class="panel-formElements-item panel-formElements-item-vertical-layout">
-				<label for="githubPersonalToken">
+				<label for="github.token">
 					<strong>Personal token for the GitHub API</strong>
 					(Don't have a personal token? <a target="_blank" rel="noopener" href="https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user">Generate one</a>)
 				</label>
-				<input  id="githubPersonalToken" type="text" size="50">
+				<input  id="github.token" type="text" size="50">
 			</div>
 
 			<!-- Search settings -->
 			<h4>Preferences</h4>
 			<div class="panel-formElements-item">
 				<p>Search and display:&ensp;</p>
-				<input  id="githubSearchRepoName:nameWithOwner" name="githubSearchRepoName" type="radio" checked>
-				<label for="githubSearchRepoName:nameWithOwner">Repo name and owner</label>
-				<input  id="githubSearchRepoName:nameOnly"      name="githubSearchRepoName" type="radio">
-				<label for="githubSearchRepoName:nameOnly">     Repo name only</label>
+				<input  id="github.fullRepoName:true"  name="github.fullRepoName" type="radio" checked>
+				<label for="github.fullRepoName:true"> Repo name and owner</label>
+				<input  id="github.fullRepoName:false" name="github.fullRepoName" type="radio">
+				<label for="github.fullRepoName:false">Repo name only</label>
 			</div>
 
 			<p></p>
