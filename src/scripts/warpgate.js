@@ -110,16 +110,20 @@ async function generateTargets()
 {
 	let targets = [];
 
+	console.info('Generating new targets...');
+
 	/**
 	 * GitHub
 	 */
 	const token        = await getStorageValue('github.token',        null, v => typeof v == 'string');
 	const fullRepoName = await getStorageValue('github.fullRepoName', true, v => typeof v == 'boolean');
 
-	targets.push.call(null, (await getGithubRepos(token)).map(repo => ({
+	targets.push.apply(targets, (await getGithubRepos(token)).map(repo => ({
 		content:     repo.node.url,
 		description: fullRepoName ? repo.node.nameWithOwner : repo.node.nameWithOwner.split('/')[1],
 	})));
+
+	console.info('Generated new targets:', targets);
 
 	return targets;
 }

@@ -29,6 +29,8 @@ export async function getGithubRepos(token)
  */
 async function isLocalRepoListOutdated(token, repos)
 {
+	console.info('Checking for outdated repos list...');
+
 	// Fetch the number of starred repos and the URL of the last starred repo the GitHub API
 	const data = await queryAPI(token, `
 		viewer {
@@ -55,6 +57,8 @@ async function isLocalRepoListOutdated(token, repos)
  */
 async function getStarredReposList(token)
 {
+	console.info('Fetching new repos list...');
+
 	let repos     = [];
 	let data      = null;
 	let endCursor = null;
@@ -78,9 +82,14 @@ async function getStarredReposList(token)
 			}
 		`);
 
-		if (!data) return;
+		if (!data)
+		{
+			console.error('Failed to query GitHub API!');
+			return repos;
+		}
+		console.info('Successfully queried GitHub API:', data);
 
-		repos.push.call(null, data.viewer.starredRepositories.edges);
+		repos.push.apply(repos, data.viewer.starredRepositories.edges);
 		endCursor = data.viewer.starredRepositories.pageInfo.endCursor;
 
 	} while(data.viewer.starredRepositories.pageInfo.hasNextPage);
