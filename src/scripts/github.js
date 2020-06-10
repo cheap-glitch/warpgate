@@ -117,7 +117,7 @@ async function queryAPI(token, query)
 
 	// Query the API
 	try {
-		res = await fetch('https://api.github.com/graphql', {
+		res = await timeout(6000, fetch('https://api.github.com/graphql', {
 			method: 'POST',
 
 			body: `{ "query": "query {${query.replace(/"/g, '\\"').replace(/\n|\t/g, ' ').replace(/ {2,}/g, ' ')}}" }`,
@@ -127,7 +127,7 @@ async function queryAPI(token, query)
 				'Authorization': `bearer ${token}`,
 				'Content-Type':  'application/json',
 			},
-		});
+		}));
 	}
 	catch (err) {
 		console.error(err);
@@ -146,4 +146,26 @@ async function queryAPI(token, query)
 	}
 
 	return json.data;
+}
+
+/**
+ * Wrap a promise in another that will be reject once the timeout expires
+ */
+function timeout(duration, promise)
+{
+	return new Promise(function(resolve, reject)
+	{
+		const timeout = setTimeout(() => reject(new Error('Timeout expired!')), duration);
+
+		promise.then(
+			res => {
+				clearTimeout(timeout);
+				resolve(res);
+			},
+			err => {
+				clearTimeout(timeout);
+				reject(err);
+			}
+		);
+	});
 }
