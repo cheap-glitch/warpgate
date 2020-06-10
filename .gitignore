@@ -3,7 +3,11 @@
 # .gitignore
 #
 
-*.zip
-/banner/
-/build/
+# NPM
 /node_modules/
+
+# Build artifacts
+*.zip
+
+# Others
+/banner/
