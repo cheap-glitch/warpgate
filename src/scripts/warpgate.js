@@ -19,7 +19,7 @@ import { getGithubRepos  } from './github.js'
 {
 	/**
 	 * Initialization
-	 * =====================================================================
+	 * ---------------------------------------------------------------------
 	 */
 
 	// Initialize the list of all possible targets
@@ -30,7 +30,7 @@ import { getGithubRepos  } from './github.js'
 
 	/**
 	 * UI callbacks
-	 * =====================================================================
+	 * ---------------------------------------------------------------------
 	 */
 
 	// Suggest URLs in the address bar
@@ -68,7 +68,7 @@ import { getGithubRepos  } from './github.js'
 
 	/**
 	 * Data refreshing
-	 * =====================================================================
+	 * ---------------------------------------------------------------------
 	 */
 
 	// Force a refresh of the local data when the corresponding keyboard command is sent

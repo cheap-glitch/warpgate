@@ -53,8 +53,9 @@ async function isLocalRepoListOutdated(token, repos)
 
 	if (!data)
 	{
+		// If the GitHub API couldn't be reached, keep the local data
 		console.error('Failed to query GitHub API!');
-		return true;
+		return false;
 	}
 
 	// Return true if the number of starred repos has changed, or if the latest repo isn't the same
