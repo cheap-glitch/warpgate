@@ -5,6 +5,13 @@
 
 import { getStorageValue, setStorageValue } from './storage.js'
 
+// Default settings for GitHub repos
+export const githubSettings = {
+	sortByName:   false,
+	fullRepoName: true,
+	jumpToReadme: false,
+};
+
 (async function()
 {
 	/**
@@ -20,9 +27,11 @@ import { getStorageValue, setStorageValue } from './storage.js'
 	/**
 	 * GitHub settings
 	 */
-	['sortByName', 'fullRepoName', 'jumpToReadme'].forEach(async function(setting)
+	Object.keys(githubSettings).forEach(async function(setting)
 	{
-		document.getElementById(`github:${setting}:` + (await getStorageValue('sync', `github:${setting}`, true, v => typeof v == 'boolean')).toString()).checked = true;
+		document.getElementById(
+			`github:${setting}:` + (await getStorageValue('sync', `github:${setting}`, githubSettings[setting], v => typeof v == 'boolean')).toString()
+		).checked = true;
 
 		[true, false].forEach(option => document.getElementById(`github:${setting}:${option}`).addEventListener('change', async function(e)
 		{
