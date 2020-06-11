@@ -9,6 +9,7 @@ const path        = require('path');
 const zip         = require('cross-zip');
 const walk        = require('klaw-sync');
 const terser      = require('terser');
+const minifyHTML  = require('html-minifier').minify;
 const webext      = require('web-ext').default
 
 const NAME        = require('./package.json').name;
@@ -36,11 +37,19 @@ fs.copySync(BUILD_DIR, SRC_AMO_DIR);
 copy(['./package.json', 'LICENSE', 'README.md'], SRC_AMO_DIR);
 zip.zipSync(SRC_AMO_DIR, `${SRC_AMO_DIR}.zip`);
 
-// Minify all JavaScript files in the build dir
+// Minify all the HTML and JS files in the build dir
 walk(BUILD_DIR).forEach(function(file)
 {
-	if (path.parse(file.path).ext == '.js')
-		fs.writeFileSync(file.path, terser.minify(fs.readFileSync(file.path).toString()).code);
+	switch (path.parse(file.path).ext)
+	{
+		case '.js':   fs.writeFileSync(file.path, terser.minify(fs.readFileSync(file.path).toString()).code);
+		case '.html': fs.writeFileSync(file.path,    minifyHTML(fs.readFileSync(file.path).toString(), {
+			decodeEntities:              true,
+			collapseWhitespace:          true,
+			collapseInlineTagWhitespace: true,
+			collapseBooleanAttributes:   true,
+		}));
+	}
 });
 
 // Package the extension using web-ext
