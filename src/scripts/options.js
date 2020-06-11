@@ -3,14 +3,8 @@
  * scripts/options.js
  */
 
+import { githubSettings }                   from './constants.js'
 import { getStorageValue, setStorageValue } from './storage.js'
-
-// Default settings for GitHub repos
-export const githubSettings = {
-	sortByName:   false,
-	fullRepoName: true,
-	jumpToReadme: false,
-};
 
 (async function()
 {
@@ -33,7 +27,7 @@ export const githubSettings = {
 			`github:${setting}:` + (await getStorageValue('sync', `github:${setting}`, githubSettings[setting], v => typeof v == 'boolean')).toString()
 		).checked = true;
 
-		[true, false].forEach(option => document.getElementById(`github:${setting}:${option}`).addEventListener('change', async function(e)
+		[true, false].forEach(option => document.getElementById(`github:${setting}:${option.toString()}`).addEventListener('change', async function(e)
 		{
 			if (!e.target.checked) return;
 

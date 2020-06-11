@@ -3,6 +3,7 @@
  * scripts/github.js
  */
 
+import { FETCH_TIMEOUT }                    from './constants.js'
 import { getStorageValue, setStorageValue } from './storage.js'
 
 /**
@@ -117,7 +118,7 @@ async function queryAPI(token, query)
 
 	// Query the API
 	try {
-		res = await timeout(6000, fetch('https://api.github.com/graphql', {
+		res = await timeout(FETCH_TIMEOUT, fetch('https://api.github.com/graphql', {
 			method: 'POST',
 
 			body: `{ "query": "query {${query.replace(/"/g, '\\"').replace(/\n|\t/g, ' ').replace(/ {2,}/g, ' ')}}" }`,

@@ -12,7 +12,7 @@
  * This software is distributed under the Mozilla Public License 2.0
  */
 
-import { githubSettings  } from './options.js'
+import { githubSettings  } from './constants.js'
 import { getStorageValue } from './storage.js'
 import { getGithubRepos  } from './github.js'
 
@@ -117,10 +117,20 @@ async function generateTargets()
 	 * GitHub
 	 */
 	const token        = await getStorageValue('sync', 'github:token',        null,                           v => typeof v == 'string');
+	const sortByName   = await getStorageValue('sync', 'github:sortByName',   githubSettings['sortByName'],   v => typeof v == 'boolean');
 	const fullRepoName = await getStorageValue('sync', 'github:fullRepoName', githubSettings['fullRepoName'], v => typeof v == 'boolean');
 	const jumpToReadme = await getStorageValue('sync', 'github:jumpToReadme', githubSettings['jumpToReadme'], v => typeof v == 'boolean');
 
-	targets.push.apply(targets, (await getGithubRepos(token)).map(repo => ({
+	let repos = await getGithubRepos(token);
+	if (sortByName)
+	{
+		// Create a collator to compare strings speedily
+		const coll = new Intl.Collator('en');
+
+		repos.sort((a, b) => coll.compare(a.node.nameWithOwner.split('/')[1], b.node.nameWithOwner.split('/')[1]));
+	}
+
+	targets.push.apply(targets, repos.map(repo => ({
 		content:     repo.node.url + (jumpToReadme ? '#readme' : ''),
 		description: fullRepoName ? repo.node.nameWithOwner : repo.node.nameWithOwner.split('/')[1],
 	})));
