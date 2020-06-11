@@ -8,31 +8,22 @@ import { getStorageValue, setStorageValue } from './storage.js'
 (async function()
 {
 	/**
-	 * Autofill the inputs with the saved preferences
+	 * GitHub token
 	 */
-
-	// Token
 	document.getElementById('github:token').value = await getStorageValue('sync', 'github:token', '', v => typeof v == 'string');
-
-	// Toggled settings
-	['fullRepoName', 'jumpToReadme'].forEach(async setting => {
-		document.getElementById(`github:${setting}:` + (await getStorageValue('sync', `github:${setting}`, true, v => typeof v == 'boolean')).toString()).checked = true;
-	});
-
-	/**
-	 * Save the preferences upon modification & update the targets
-	 */
-
-	// Token
 	document.getElementById('github:token').addEventListener('input', async function(e)
 	{
 		await setStorageValue('sync', 'github:token', e.target.value.trim())
 		await updateTargets();
 	});
 
-	// Toggled settings
-	['fullRepoName', 'jumpToReadme'].forEach(function(setting)
+	/**
+	 * GitHub settings
+	 */
+	['sortByName', 'fullRepoName', 'jumpToReadme'].forEach(async function(setting)
 	{
+		document.getElementById(`github:${setting}:` + (await getStorageValue('sync', `github:${setting}`, true, v => typeof v == 'boolean')).toString()).checked = true;
+
 		[true, false].forEach(option => document.getElementById(`github:${setting}:${option}`).addEventListener('change', async function(e)
 		{
 			if (!e.target.checked) return;
