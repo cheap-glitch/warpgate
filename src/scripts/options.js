@@ -14,8 +14,10 @@ import { getStorageValue, setStorageValue } from './storage.js'
 	// Token
 	document.getElementById('github:token').value = await getStorageValue('sync', 'github:token', '', v => typeof v == 'string');
 
-	// Full name / repo name only
-	document.getElementById('github:fullRepoName:' + (await getStorageValue('sync', 'github:fullRepoName', true, v => typeof v == 'boolean')).toString()).checked = true;
+	// Toggled settings
+	['fullRepoName', 'jumpToReadme'].forEach(async setting => {
+		document.getElementById(`github:${setting}:` + (await getStorageValue('sync', `github:${setting}`, true, v => typeof v == 'boolean')).toString()).checked = true;
+	});
 
 	/**
 	 * Save the preferences upon modification & update the targets
@@ -28,14 +30,17 @@ import { getStorageValue, setStorageValue } from './storage.js'
 		await updateTargets();
 	});
 
-	// Full name
-	[true, false].forEach(option => document.getElementById(`github:fullRepoName:${option}`).addEventListener('change', async function(e)
+	// Toggled settings
+	['fullRepoName', 'jumpToReadme'].forEach(function(setting)
 	{
-		if (!e.target.checked) return;
+		[true, false].forEach(option => document.getElementById(`github:${setting}:${option}`).addEventListener('change', async function(e)
+		{
+			if (!e.target.checked) return;
 
-		await setStorageValue('sync', 'github:fullRepoName', option)
-		await updateTargets();
-	}));
+			await setStorageValue('sync', `github:${setting}`, option)
+			await updateTargets();
+		}));
+	});
 })();
 
 async function updateTargets()

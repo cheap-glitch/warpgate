@@ -6,10 +6,6 @@
 	<head>
 		<meta charset="utf-8">
 		<style>
-			h4 {
-				margin-bottom: 0;
-			}
-
 			.panel-formElements-item-vertical-layout {
 				display: block;
 			}
@@ -42,7 +38,10 @@
 		<section class="browser-style panel-section panel-section-formElements">
 			<p id="update-message" class="update-message">🛠️🚀 Updating warp targets…</p>
 
-			<h2>Starred GitHub repos</h2>
+			<!-- =============================================== -->
+			<!-- GitHub stars                                    -->
+			<!-- =============================================== -->
+			<h2>Starred GitHub repos 🌟</h2>
 
 			<!-- API token -->
 			<div class="panel-formElements-item panel-formElements-item-vertical-layout">
@@ -53,14 +52,24 @@
 				<input  id="github:token" type="text" size="50">
 			</div>
 
-			<!-- Search settings -->
-			<h4>Preferences</h4>
+			<p><strong>Preferences</strong></p>
+
+			<!-- Full name / repo name only -->
 			<div class="panel-formElements-item">
-				<p>Search and display:&ensp;</p>
+				<em>Search and display:</em>&ensp;
 				<input  id="github:fullRepoName:true"  name="github:fullRepoName" type="radio" checked>
-				<label for="github:fullRepoName:true"> Repo name and owner</label>
+				<label for="github:fullRepoName:true"> the repo name and owner</label>
 				<input  id="github:fullRepoName:false" name="github:fullRepoName" type="radio">
-				<label for="github:fullRepoName:false">Repo name only</label>
+				<label for="github:fullRepoName:false">the repo name only</label>
+			</div>
+
+			<!-- Jump to readme -->
+			<div class="panel-formElements-item">
+				<em>When opening a new page:</em>&ensp;
+				<input  id="github:jumpToReadme:false" name="github:jumpToReadme" type="radio" checked>
+				<label for="github:jumpToReadme:false">stay at the top of the page</label>
+				<input  id="github:jumpToReadme:true"  name="github:jumpToReadme" type="radio">
+				<label for="github:jumpToReadme:true"> jump to the readme</label>
 			</div>
 
 			<p></p>

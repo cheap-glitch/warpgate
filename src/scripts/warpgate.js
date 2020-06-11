@@ -115,11 +115,12 @@ async function generateTargets()
 	/**
 	 * GitHub
 	 */
-	const token        = await getStorageValue('sync', 'github:token',        null, v => typeof v == 'string');
-	const fullRepoName = await getStorageValue('sync', 'github:fullRepoName', true, v => typeof v == 'boolean');
+	const token        = await getStorageValue('sync', 'github:token',        null,  v => typeof v == 'string');
+	const fullRepoName = await getStorageValue('sync', 'github:fullRepoName', true,  v => typeof v == 'boolean');
+	const jumpToReadme = await getStorageValue('sync', 'github:jumpToReadme', false, v => typeof v == 'boolean');
 
 	targets.push.apply(targets, (await getGithubRepos(token)).map(repo => ({
-		content:     repo.node.url,
+		content:     repo.node.url + (jumpToReadme ? '#readme' : ''),
 		description: fullRepoName ? repo.node.nameWithOwner : repo.node.nameWithOwner.split('/')[1],
 	})));
 
