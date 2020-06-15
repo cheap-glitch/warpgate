@@ -1,6 +1,4 @@
-<p align="center">
-	<img src="https://raw.githubusercontent.com/cheap-glitch/warpgate/master/docs/banner.png" alt="Banner of the project.">
-</p>
+<p align="center"><img src="./docs/banner.png" alt="Banner of the project."></p>
 
 <div align="center">
 	<img src="https://badgen.net/github/license/cheap-glitch/warpgate" alt="Green badge displaying the license (MPL 2.0).">
@@ -48,7 +46,7 @@ update themselves when you unstar a repo or star a new one.
 Enter the  prefix `@` in  the address  bar, followed by  a space and  the search
 string. Warpgate will suggest matching targets based on your settings.
 
-![usage demo](https://raw.githubusercontent.com/cheap-glitch/warpgate/master/docs/demo.gif)
+![usage demo](./docs/demo.gif)
 
 The warp targets are  updated every 10 minutes, but if for  some reason you want
 an immediate refresh, press `Alt + W` on your keyboard.
