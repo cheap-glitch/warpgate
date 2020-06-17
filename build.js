@@ -45,9 +45,10 @@ walk(BUILD_DIR).forEach(function(file)
 		case '.js':   fs.writeFileSync(file.path, terser.minify(fs.readFileSync(file.path).toString()).code); break;
 		case '.html': fs.writeFileSync(file.path,    minifyHTML(fs.readFileSync(file.path).toString(), {
 			decodeEntities:              true,
+			collapseBooleanAttributes:   true,
 			collapseWhitespace:          true,
 			collapseInlineTagWhitespace: true,
-			collapseBooleanAttributes:   true,
+			conservativeCollapse:        true,
 		}));
 		break;
 	}
