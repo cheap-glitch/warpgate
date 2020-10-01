@@ -16,8 +16,7 @@ import { githubSettings  } from './constants.js'
 import { getStorageValue } from './storage.js'
 import { getGithubRepos  } from './github.js'
 
-(async function()
-{
+(async function() {
 	/**
 	 * Initialization
 	 * ---------------------------------------------------------------------
@@ -35,8 +34,7 @@ import { getGithubRepos  } from './github.js'
 	 */
 
 	// Suggest URLs in the address bar
-	browser.omnibox.onInputChanged.addListener(function(text, suggest)
-	{
+	browser.omnibox.onInputChanged.addListener(function(text, suggest) {
 		if (!targets.length) return;
 
 		// Split the user input to create a list of keywords
@@ -53,14 +51,12 @@ import { getGithubRepos  } from './github.js'
 	});
 
 	// Perform the correct action when a suggestion is selected by the user
-	browser.omnibox.onInputEntered.addListener(function(url, disposition)
-	{
+	browser.omnibox.onInputEntered.addListener(function(url, disposition) {
 		// Ignore the first suggestion (the info message)
 		if (!url.startsWith('https://')) return;
 
 		// Open the URL according to the user's choice
-		switch (disposition)
-		{
+		switch (disposition) {
 			case 'currentTab':       browser.tabs.update({ url });                break;
 			case 'newForegroundTab': browser.tabs.create({ url });                break;
 			case 'newBackgroundTab': browser.tabs.create({ url, active: false }); break;
@@ -73,10 +69,8 @@ import { getGithubRepos  } from './github.js'
 	 */
 
 	// Force a refresh of the local data when the corresponding keyboard command is sent
-	browser.commands.onCommand.addListener(async function(command)
-	{
-		if (command == 'refresh-data')
-		{
+	browser.commands.onCommand.addListener(async function(command) {
+		if (command == 'refresh-data') {
 			await browser.notifications.create('notif-data-refreshed', {
 				type:    'basic',
 				title:   'Updating warp targets ⌛',
@@ -97,8 +91,7 @@ import { getGithubRepos  } from './github.js'
 	window.setInterval(async () => targets = await generateTargets(), 10*60*1000);
 
 	// Refresh the data when an option is modified
-	browser.runtime.onMessage.addListener(async function(message)
-	{
+	browser.runtime.onMessage.addListener(async function(message) {
 		if (message == 'refresh-data')
 			targets = await generateTargets();
 	});
@@ -107,8 +100,7 @@ import { getGithubRepos  } from './github.js'
 /**
  * Generate a list of targets for the address bar
  */
-async function generateTargets()
-{
+async function generateTargets() {
 	let targets = [];
 
 	console.info('Generating new targets...');
@@ -122,8 +114,7 @@ async function generateTargets()
 	const jumpToReadme = await getStorageValue('sync', 'github:jumpToReadme', githubSettings['jumpToReadme'], v => typeof v == 'boolean');
 
 	let repos = await getGithubRepos(token);
-	if (sortByName)
-	{
+	if (sortByName) {
 		// Create a collator to compare strings speedily
 		const coll = new Intl.Collator('en');
 

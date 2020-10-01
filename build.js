@@ -38,10 +38,8 @@ copy(['./package.json', 'LICENSE', 'README.md'], SRC_AMO_DIR);
 zip.zipSync(SRC_AMO_DIR, `${SRC_AMO_DIR}.zip`);
 
 // Minify all the HTML and JS files in the build dir
-walk(BUILD_DIR).forEach(function(file)
-{
-	switch (path.parse(file.path).ext)
-	{
+walk(BUILD_DIR).forEach(function(file) {
+	switch (path.parse(file.path).ext) {
 		case '.js':   fs.writeFileSync(file.path, terser.minify(fs.readFileSync(file.path).toString()).code); break;
 		case '.html': fs.writeFileSync(file.path,    minifyHTML(fs.readFileSync(file.path).toString(), {
 			decodeEntities:              true,
@@ -62,17 +60,14 @@ webext.cmd.build({
 	artifactsDir:      __dirname,
 	overwriteDest:     true,
 }, {    shouldExitProgram: false,
-}).then(function()
-{
+}).then(function() {
 	// Clean up
 	fs.removeSync(BUILD_DIR);
 	fs.removeSync(SRC_AMO_DIR);
 });
 
-function copy(sources, dest)
-{
-	(Array.isArray(sources) ? sources : [sources]).forEach(function(src)
-	{
+function copy(sources, dest) {
+	(Array.isArray(sources) ? sources : [sources]).forEach(function(src) {
 		const srcpath = path.resolve(__dirname, src);
 		const target  = `${dest}/${path.parse(srcpath).base}`;
 

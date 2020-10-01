@@ -9,21 +9,18 @@ import { getStorageValue, setStorageValue } from './storage.js'
 /**
  * Return the list of repos, updated if necessary
  */
-export async function getGithubRepos(token)
-{
+export async function getGithubRepos(token) {
 	let repos = await getStorageValue('local', 'github:repos', [], v => Array.isArray(v));
 
 	console.info('Updating GitHub repos:', repos);
 
-	if (!token)
-	{
+	if (!token) {
 		console.error('No token found for the GitHub API!');
 		return repos;
 	}
 
 	// Update the list of repos if needed
-	if (token && await isLocalRepoListOutdated(token, repos))
-	{
+	if (token && await isLocalRepoListOutdated(token, repos)) {
 		repos = await getStarredReposList(token);
 		await setStorageValue('local', 'github:repos', repos);
 	}
@@ -34,8 +31,7 @@ export async function getGithubRepos(token)
 /**
  * Check for changes in the list of starred repos
  */
-async function isLocalRepoListOutdated(token, repos)
-{
+async function isLocalRepoListOutdated(token, repos) {
 	console.info('Checking for outdated repos list...');
 
 	// Fetch the number of starred repos and the URL of the last starred repo the GitHub API
@@ -52,8 +48,7 @@ async function isLocalRepoListOutdated(token, repos)
 		}
 	`);
 
-	if (!data)
-	{
+	if (!data) {
 		// If the GitHub API couldn't be reached, keep the local data
 		console.error('Failed to query GitHub API!');
 		return false;
@@ -66,8 +61,7 @@ async function isLocalRepoListOutdated(token, repos)
 /**
  * Fetch the full list of starred repos from the GitHub API
  */
-async function getStarredReposList(token)
-{
+async function getStarredReposList(token) {
 	console.info('Fetching new repos list...');
 
 	let repos     = [];
@@ -93,8 +87,7 @@ async function getStarredReposList(token)
 			}
 		`);
 
-		if (!data)
-		{
+		if (!data) {
 			console.error('Failed to query GitHub API!');
 			return repos;
 		}
@@ -111,8 +104,7 @@ async function getStarredReposList(token)
 /**
  * Query the GitHub v4 GraphQL API and return the resulting JSON
  */
-async function queryAPI(token, query)
-{
+async function queryAPI(token, query) {
 	let res  = null;
 	let json = null;
 
@@ -129,8 +121,7 @@ async function queryAPI(token, query)
 				'Content-Type':  'application/json',
 			},
 		}));
-	}
-	catch (err) {
+	} catch (err) {
 		console.error(err);
 
 		return null;
@@ -139,8 +130,7 @@ async function queryAPI(token, query)
 	// Extract the JSON data from the body of the response
 	try {
 		json = await res.json();
-	}
-	catch (err) {
+	} catch (err) {
 		console.error(err);
 
 		return null;
@@ -152,10 +142,8 @@ async function queryAPI(token, query)
 /**
  * Wrap a promise in another that will be reject once the timeout expires
  */
-function timeout(duration, promise)
-{
-	return new Promise(function(resolve, reject)
-	{
+function timeout(duration, promise) {
+	return new Promise(function(resolve, reject) {
 		const timeout = setTimeout(() => reject(new Error('Timeout expired!')), duration);
 
 		promise.then(
