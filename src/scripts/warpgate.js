@@ -40,7 +40,7 @@ import { getGithubRepos  } from './github.js'
 		if (!targets.length) return;
 
 		// Split the user input to create a list of keywords
-		const keywords = text.trim().toLowerCase().split(' ');
+		const keywords = text.trim().toLowerCase().split(/\s+/);
 
 		suggest(targets
 
