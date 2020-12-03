@@ -1,8 +1,3 @@
-
-/**
- * scripts/storage.js
- */
-
 /**
  * Return the value associated with a key in the local storage
  * If the key doesn't exist or the value is invalid, return the default value

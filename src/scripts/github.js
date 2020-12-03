@@ -1,8 +1,3 @@
-
-/**
- * scripts/github.js
- */
-
 import { FETCH_TIMEOUT }                    from './constants.js'
 import { getStorageValue, setStorageValue } from './storage.js'
 

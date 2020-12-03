@@ -1,4 +1,3 @@
-
 /**                            _____  __
  *  _    _____ ________  ___ _/ ___ \/ /____
  * | |/|/ / _ `/ __/ _ \/ _ `/ / _ `/ __/ -_)
@@ -17,21 +16,11 @@ import { getStorageValue } from './storage.js'
 import { getGithubRepos  } from './github.js'
 
 (async function() {
-	/**
-	 * Initialization
-	 * ---------------------------------------------------------------------
-	 */
-
 	// Initialize the list of all possible targets
 	let targets = await generateTargets();
 
 	// Set the message displayed at the top of the suggestions list
 	browser.omnibox.setDefaultSuggestion({ description: "🚀💫 Warp in progress…" });
-
-	/**
-	 * UI callbacks
-	 * ---------------------------------------------------------------------
-	 */
 
 	// Suggest URLs in the address bar
 	browser.omnibox.onInputChanged.addListener(function(text, suggest) {
@@ -62,11 +51,6 @@ import { getGithubRepos  } from './github.js'
 			case 'newBackgroundTab': browser.tabs.create({ url, active: false }); break;
 		}
 	});
-
-	/**
-	 * Data refreshing
-	 * ---------------------------------------------------------------------
-	 */
 
 	// Force a refresh of the local data when the corresponding keyboard command is sent
 	browser.commands.onCommand.addListener(async function(command) {

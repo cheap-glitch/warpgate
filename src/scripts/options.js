@@ -1,8 +1,3 @@
-
-/**
- * scripts/options.js
- */
-
 import { githubSettings }                   from './constants.js'
 import { getStorageValue, setStorageValue } from './storage.js'
 
