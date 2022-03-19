@@ -1,18 +1,9 @@
 <p align="center"><img src="./docs/logo.png" alt="Logo of the project."></p>
 
 <div align="center">
-	<img src="https://badgen.net/github/license/cheap-glitch/warpgate" alt="Green badge displaying the license (MPL 2.0).">
-	<img src="https://badgen.net/github/release/cheap-glitch/warpgate" alt="Green badge displaying the current version.">
+	<img src="https://badgen.net/github/license/cheap-glitch/warpgate" alt="Blue badge displaying the license (MPL 2.0).">
+	<img src="https://badgen.net/github/release/cheap-glitch/warpgate" alt="Blue badge displaying the current version.">
 </div>
-
-#### Table of contents
-
- * [Installation](#installation)
- * [Configuration](#configuration)
-   * [Starred GitHub repos](#starred-github-repos)
- * [Usage](#usage)
- * [F.A.Q.](#faq)
- * [Changelog, Acknowledgements & License](#changelog)
 
 **Warpgate** is  a browser extension which  enables a quick and  painless way to
 access "external bookmarks", i.e.  URLs that have been pinned/starred/bookmarked
@@ -23,8 +14,9 @@ in a third-party service or web app.
 
 ## Installation
 
-[Firefox](https://addons.mozilla.org/en-US/firefox/addon/warpgate) | Chrome (not
-yet available) | Opera (not yet available)
+ * [Firefox](https://addons.mozilla.org/en-US/firefox/addon/warpgate)
+ * Chrome (not yet available)
+ * Opera (not yet available)
 
 ## Configuration
 
@@ -40,7 +32,6 @@ code in the corresponding field, wait for  the targets to update, and that's it!
 You can  now jump  to any  of your  starred GitHub  repos. The  suggestions will
 update themselves when you unstar a repo or star a new one.
 
-
 ## Usage
 
 Enter the  prefix `@` in  the address  bar, followed by  a space and  the search
@@ -50,7 +41,6 @@ string. Warpgate will suggest matching targets based on your settings.
 
 The warp targets are  updated every 10 minutes, but if for  some reason you want
 an immediate refresh, press `Alt + W` on your keyboard.
-
 
 ## F.A.Q.
 
@@ -71,17 +61,10 @@ an  unknown later  point, not  for regular  visits. Warpgate  focuses on  giving
 instant access  to more frequently visited  URLs which are closer  to in-browser
 bookmarks.
 
-
-## Changelog
-
-See the full changelog [here](https://github.com/cheap-glitch/warpgate/releases).
-
-
 ## Acknowledgements
 
-The font  used for the banner  is [VAL](https://www.fontfabric.com/fonts/val) by
+The  font used  for the  logo is  [VAL](https://www.fontfabric.com/fonts/val) by
 [FontFabric](https://www.fontfabric.com).
-
 
 ## License
 
