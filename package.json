@@ -30,33 +30,32 @@
     "lint:web-ext": "web-ext lint",
     "postinstall": "cp --force node_modules/webextension-polyfill/dist/browser-polyfill.min.js src/scripts/browser-polyfill.js"
   },
-	"webExt": {
-		"sourceDir": "src",
-		"run": {
-			"keepProfileChanges": true,
-			"firefoxProfile": "./test/web-ext-profile",
-			"chromiumProfile": "./test/web-ext-profile",
-			"startUrl": [
-				"https://github.com",
+  "webExt": {
+    "sourceDir": "src",
+    "run": {
+      "keepProfileChanges": true,
+      "firefoxProfile": "./test/web-ext-profile",
+      "chromiumProfile": "./test/web-ext-profile",
+      "startUrl": [
+        "https://github.com",
         "about:debugging#/runtime/this-firefox"
-			]
-		}
-	},
+      ]
+    }
+  },
+  "dependencies": {
+    "webextension-polyfill": "^0.8.0"
+  },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "cross-zip": "^4.0.0",
-    "eslint": "^7.14.0",
-    "eslint-plugin-no-unsanitized": "^3.1.4",
-    "eslint-plugin-smarter-tabs": "^1.1.2",
-    "fs-extra": "^9.0.1",
+    "eslint": "^8.11.0",
+    "eslint-plugin-no-unsanitized": "^4.0.1",
+    "eslint-plugin-smarter-tabs": "^1.2.0",
+    "fs-extra": "^10.0.1",
     "html-minifier": "^4.0.0",
     "klaw-sync": "^6.0.0",
-    "mocha": "^8.2.1",
     "npm-run-all": "^4.1.5",
-    "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
-    "terser": "^5.5.1",
-    "web-ext": "^5.4.0",
-    "webextension-polyfill": "^0.7.0"
+    "terser": "^5.12.1",
+    "web-ext": "^6.7.0"
   }
 }
