@@ -1,18 +1,28 @@
 {
   "private": true,
   "name": "warpgate",
-  "description": "A lightweight browser extension to jump to various external bookmarks via the address bar.",
   "version": "1.1.0",
+  "description": "A lightweight browser extension to jump to various external bookmarks via the address bar.",
   "license": "MPL-2.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cheap-glitch/warpgate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/cheap-glitch/warpgate/issues"
-  },
   "author": "cheap glitch <cheap.glitch@gmail.com> (https://github.com/cheap-glitch)",
+  "repository": "cheap-glitch/warpgate",
   "homepage": "https://github.com/cheap-glitch/warpgate#readme",
+  "bugs": "https://github.com/cheap-glitch/warpgate/issues",
+  "funding": "https://github.com/sponsors/cheap-glitch",
+  "keywords": [
+    "address",
+    "browser",
+    "extension",
+    "firefox",
+    "github",
+    "jump",
+    "navigation",
+    "omnibar",
+    "productivity",
+    "repos",
+    "stars",
+    "webext"
+  ],
   "scripts": {
     "build": "node build.js",
     "lint": "run-s 'lint:*'",
