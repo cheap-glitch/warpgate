@@ -1,6 +1,5 @@
 {
 	"manifest_version": 2,
-
 	"name": "Warpgate",
 	"description": "Jump to various external bookmarks via the address bar.",
 	"version": "1.1",
@@ -9,36 +8,29 @@
 			"id": "warpgate--dev@cheap-glitch.org"
 		}
 	},
-
 	"developer" : {
 		"name": "cheap glitch",
 		"url": "https://github.com/cheap-glitch"
 	},
-
 	"permissions": [
     "notifications",
 		"storage"
 	],
-
   "icons": {
-    "48": "icons/48x48.png",
-    "96": "icons/96x96.png"
+    "48": "icon/48x48.png",
+    "96": "icon/96x96.png"
   },
-
 	"background": {
-		"page": "src/pages/background.html"
+		"page": "pages/background.html"
 	},
-
   "options_ui": {
-    "page": "src/pages/options.html",
+    "page": "pages/options.html",
     "browser_style": true,
     "chrome_style": true
   },
-
 	"omnibox": {
 		"keyword": "@"
 	},
-
   "commands": {
     "refresh-data": {
       "suggested_key": {
@@ -47,5 +39,4 @@
       "description": "Trigger an immediate refresh of the warp targets"
     }
   }
-
 }

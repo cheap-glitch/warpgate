@@ -1,4 +1,4 @@
-<p align="center"><img src="./docs/banner.png" alt="Banner of the project."></p>
+<p align="center"><img src="./docs/logo.png" alt="Logo of the project."></p>
 
 <div align="center">
 	<img src="https://badgen.net/github/license/cheap-glitch/warpgate" alt="Green badge displaying the license (MPL 2.0).">

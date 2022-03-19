@@ -1,13 +1,8 @@
-
-#
-# .gitignore
-#
-
-# NPM
-/node_modules/
-
-# Build artifacts
+*.env
 *.zip
-
-# Others
-/banner/
+/.coverage/
+/.coveralls.yml
+/dist/
+/docs/logo/
+/node_modules/
+/test/web-ext-profile/
