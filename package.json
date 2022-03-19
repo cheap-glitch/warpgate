@@ -24,13 +24,24 @@
     "webext"
   ],
   "scripts": {
-    "build": "node build.js",
-    "lint": "run-s 'lint:*'",
-    "lint:js": "eslint '**/*.js'",
-    "lint:webext": "web-ext lint",
-    "postinstall": "cp node_modules/webextension-polyfill/dist/browser-polyfill.min.js src/scripts/browser-polyfill.js",
-    "serve": "cross-env GTK_THEME=Numix:light web-ext run --firefox-profile dev --keep-profile-changes --url about:debugging#/runtime/this-firefox"
+    "build": "node scripts/build.js",
+    "lint": "run-p lint:*",
+    "lint:js": "eslint . --ext .js --ignore-path .gitignore",
+    "lint:web-ext": "web-ext lint",
+    "postinstall": "cp --force node_modules/webextension-polyfill/dist/browser-polyfill.min.js src/scripts/browser-polyfill.js"
   },
+	"webExt": {
+		"sourceDir": "src",
+		"run": {
+			"keepProfileChanges": true,
+			"firefoxProfile": "./test/web-ext-profile",
+			"chromiumProfile": "./test/web-ext-profile",
+			"startUrl": [
+				"https://github.com",
+        "about:debugging#/runtime/this-firefox"
+			]
+		}
+	},
   "devDependencies": {
     "cross-env": "^7.0.3",
     "cross-zip": "^4.0.0",
