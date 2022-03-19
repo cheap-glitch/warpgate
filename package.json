@@ -42,16 +42,42 @@
       ]
     }
   },
+  "eslintConfig": {
+    "root": true,
+    "extends": "@cheap-glitch",
+    "plugins": [
+      "no-unsanitized"
+    ],
+    "env": {
+      "browser": true,
+      "webextensions": true
+    },
+    "ignorePatterns": [
+      "src/scripts/browser-polyfill.js"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "scripts/*.js"
+        ],
+        "env": {
+          "node": true
+        }
+      }
+    ]
+  },
   "dependencies": {
     "webextension-polyfill": "^0.8.0"
   },
   "devDependencies": {
+    "@cheap-glitch/eslint-config": "^3.5.0",
     "cross-zip": "^4.0.0",
     "eslint": "^8.11.0",
     "eslint-plugin-no-unsanitized": "^4.0.1",
     "eslint-plugin-smarter-tabs": "^1.2.0",
     "fs-extra": "^10.0.1",
     "html-minifier": "^4.0.0",
+    "jest": "^27.5.1",
     "klaw-sync": "^6.0.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
