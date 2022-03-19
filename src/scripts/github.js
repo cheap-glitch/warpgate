@@ -1,13 +1,12 @@
-import { FETCH_TIMEOUT }                    from './constants.js'
-import { getStorageValue, setStorageValue } from './storage.js'
+import { FETCH_TIMEOUT } from './constants.js';
+import { getStorageValue, setStorageValue } from './storage.js';
 
 /**
  * Return the list of repos, updated if necessary
  */
 export async function getGithubRepos(token) {
-	let repos = await getStorageValue('local', 'github:repos', [], v => Array.isArray(v));
-
-	console.info('Updating GitHub repos:', repos);
+	let repos = await getStorageValue('local', 'github:repos', []);
+	console.log('Updating GitHub repos:', repos);
 
 	if (!token) {
 		console.error('No token found for the GitHub API!');
@@ -15,7 +14,7 @@ export async function getGithubRepos(token) {
 	}
 
 	// Update the list of repos if needed
-	if (token && await isLocalRepoListOutdated(token, repos)) {
+	if (await isLocalRepoListOutdated(token, repos)) {
 		repos = await getStarredReposList(token);
 		await setStorageValue('local', 'github:repos', repos);
 	}
@@ -27,7 +26,7 @@ export async function getGithubRepos(token) {
  * Check for changes in the list of starred repos
  */
 async function isLocalRepoListOutdated(token, repos) {
-	console.info('Checking for outdated repos list...');
+	console.log('Checking for outdated repos list...');
 
 	// Fetch the number of starred repos and the URL of the last starred repo the GitHub API
 	const data = await queryAPI(token, `
@@ -49,19 +48,22 @@ async function isLocalRepoListOutdated(token, repos) {
 		return false;
 	}
 
+	const { starredRepositories } = data.viewer;
+
 	// Return true if the number of starred repos has changed, or if the latest repo isn't the same
-	return (repos.length != data.viewer.starredRepositories.totalCount) || (repos[0].node.url != data.viewer.starredRepositories.edges[0].node.url);
+	return repos.length !== starredRepositories.totalCount || repos[0].node.url !== starredRepositories.edges[0].node.url;
 }
 
 /**
  * Fetch the full list of starred repos from the GitHub API
  */
 async function getStarredReposList(token) {
-	console.info('Fetching new repos list...');
+	console.log('Fetching new repos list...');
 
-	let repos     = [];
-	let data      = null;
-	let endCursor = null;
+	let data;
+	let pageInfo;
+	let endCursor;
+	const repos = [];
 
 	// Loop through the pages until the last one is reached
 	do {
@@ -83,15 +85,16 @@ async function getStarredReposList(token) {
 		`);
 
 		if (!data) {
-			console.error('Failed to query GitHub API!');
+			console.error('Failed to query GitHub API');
 			return repos;
 		}
-		console.info('Successfully queried GitHub API:', data);
 
-		repos.push.apply(repos, data.viewer.starredRepositories.edges);
-		endCursor = data.viewer.starredRepositories.pageInfo.endCursor;
+		console.log('Successfully queried GitHub API:', data);
+		repos.push(data.viewer.starredRepositories.edges);
 
-	} while(data.viewer.starredRepositories.pageInfo.hasNextPage);
+		pageInfo = data.viewer.starredRepositories.pageInfo;
+		endCursor = pageInfo.endCursor;
+	} while (pageInfo.hasNextPage);
 
 	return repos;
 }
@@ -100,56 +103,57 @@ async function getStarredReposList(token) {
  * Query the GitHub v4 GraphQL API and return the resulting JSON
  */
 async function queryAPI(token, query) {
-	let res  = null;
-	let json = null;
+	let response;
+	let responseJson;
 
 	// Query the API
 	try {
-		res = await timeout(FETCH_TIMEOUT, fetch('https://api.github.com/graphql', {
+		response = await timeoutPromise(FETCH_TIMEOUT, fetch('https://api.github.com/graphql', {
+			body: `{ "query": "query {${query.replaceAll('"', '\\"').replace(/\n|\t/ug, ' ').replace(/ {2,}/ug, ' ')}}" }`,
 			method: 'POST',
-
-			body: `{ "query": "query {${query.replace(/"/g, '\\"').replace(/\n|\t/g, ' ').replace(/ {2,}/g, ' ')}}" }`,
-
 			headers: {
-				'User-Agent':    'desktop:org.cheap-glitch@warpgate:v1.2.0',
+				'User-Agent': 'desktop:org.cheap-glitch@warpgate:v1.2.0',
+				'Content-Type': 'application/json',
 				'Authorization': `bearer ${token}`,
-				'Content-Type':  'application/json',
 			},
 		}));
-	} catch (err) {
-		console.error(err);
-
-		return null;
+	} catch (error) {
+		console.error(error);
+		return;
 	}
 
 	// Extract the JSON data from the body of the response
 	try {
-		json = await res.json();
-	} catch (err) {
-		console.error(err);
-
-		return null;
+		responseJson = await response.json();
+	} catch (error) {
+		console.error(error);
+		return;
 	}
 
-	return json.data;
+	return responseJson.data;
 }
 
 /**
  * Wrap a promise in another that will be reject once the timeout expires
  */
-function timeout(duration, promise) {
-	return new Promise(function(resolve, reject) {
-		const timeout = setTimeout(() => reject(new Error('Timeout expired!')), duration);
+function timeoutPromise(duration, promise) {
+	return new Promise((resolve, reject) => {
+		const timeout = setTimeout(
+			() => {
+				reject(new Error('Timeout expired'));
+			},
+			duration,
+		);
 
 		promise.then(
-			res => {
+			response => {
 				clearTimeout(timeout);
-				resolve(res);
+				resolve(response);
 			},
-			err => {
+			error => {
 				clearTimeout(timeout);
-				reject(err);
-			}
+				reject(error);
+			},
 		);
 	});
 }

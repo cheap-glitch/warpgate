@@ -1,37 +1,44 @@
-import { githubSettings }                   from './constants.js'
-import { getStorageValue, setStorageValue } from './storage.js'
+/* eslint-disable unicorn/prefer-query-selector -- The column makes the selector invalid */
 
-(async function() {
+import { githubSettings } from './constants.js';
+import { getStorageValue, setStorageValue } from './storage.js';
+
+async function updateTargets() {
+	document.getElementById('update-message').classList.add('is-visible');
+	await browser.runtime.sendMessage('refresh-data');
+	document.getElementById('update-message').classList.remove('is-visible');
+}
+
+(async () => {
 	/**
 	 * GitHub token
 	 */
-	document.getElementById('github:token').value = await getStorageValue('sync', 'github:token', '', v => typeof v == 'string');
-	document.getElementById('github:token').addEventListener('input', async function(e) {
-		await setStorageValue('sync', 'github:token', e.target.value.trim())
+	document.getElementById('github:token').dataset.tokenValue = await getStorageValue('sync', 'github:token', '');
+	document.getElementById('github:token').addEventListener('input', async event => {
+		await setStorageValue('sync', 'github:token', event.target.dataset.tokenValue.trim());
 		await updateTargets();
 	});
 
 	/**
 	 * GitHub settings
 	 */
-	Object.keys(githubSettings).forEach(async function(setting) {
-		document.getElementById(
-			`github:${setting}:` + (await getStorageValue('sync', `github:${setting}`, githubSettings[setting], v => typeof v == 'boolean')).toString()
-		).checked = true;
+	for (const setting of Object.keys(githubSettings)) {
+		const settingCheckboxSelector = `github:${setting}:${await getStorageValue('sync', `github:${setting}`, githubSettings[setting])}`;
+		document.getElementById(settingCheckboxSelector).checked = true;
 
-		[true, false].forEach(option => document.getElementById(`github:${setting}:${option.toString()}`).addEventListener('change', async function(e) {
-			if (!e.target.checked) return;
+		for (const option of [true, false]) {
+			document
+				.getElementById(`github:${setting}:${String(option)}`)
+				.addEventListener('change', async event => {
+					if (!event.target.checked) {
+						return;
+					}
 
-			await setStorageValue('sync', `github:${setting}`, option)
-			await updateTargets();
-		}));
-	});
+					await setStorageValue('sync', `github:${setting}`, option);
+					await updateTargets();
+				});
+		}
+	}
 })();
 
-async function updateTargets() {
-	document.getElementById('update-message').classList.add('is-visible');
-
-	await browser.runtime.sendMessage('refresh-data');
-
-	document.getElementById('update-message').classList.remove('is-visible');
-}
+/* eslint-enable unicorn/prefer-query-selector -- EOF */
