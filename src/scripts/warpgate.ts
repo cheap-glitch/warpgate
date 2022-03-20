@@ -12,9 +12,9 @@
  * This software is distributed under the Mozilla Public License 2.0
  */
 
-import { githubSettings } from './constants.js';
-import { getGithubRepos } from './github.js';
-import { getStorageValue } from './storage.js';
+import { getGitHubRepos } from './github';
+import { getStorageValue } from './storage';
+import { defaultGitHubSettings } from './defaults';
 
 (async () => {
 	// Initialize the list of all possible targets
@@ -98,36 +98,38 @@ import { getStorageValue } from './storage.js';
 	});
 })();
 
+interface WarpTarget {
+	content: string;
+	description: string;
+}
+
 /**
  * Generate a list of targets for the address bar
  */
-async function generateTargets() {
-	const targets = [];
+async function generateTargets(): Promise<WarpTarget[]> {
+	const targets: WarpTarget[] = [];
 	console.log('Generating new targets...');
 
-	const token = await getStorageValue('sync', 'github:token');
-	const sortByName = await getStorageValue('sync', 'github:sortByName', githubSettings.sortByName);
-	const fullRepoName = await getStorageValue('sync', 'github:fullRepoName', githubSettings.fullRepoName);
-	const jumpToReadme = await getStorageValue('sync', 'github:jumpToReadme', githubSettings.jumpToReadme);
+	const token: string | undefined = await getStorageValue('sync', 'github:token');
+	const sortByName = await getStorageValue('sync', 'github:sortByName') ?? defaultGitHubSettings.sortByName;
+	const fullRepoName = await getStorageValue('sync', 'github:fullRepoName') ?? defaultGitHubSettings.fullRepoName;
+	const jumpToReadme = await getStorageValue('sync', 'github:jumpToReadme') ?? defaultGitHubSettings.jumpToReadme;
 
-	const repos = await getGithubRepos(token);
+	const repos = await getGitHubRepos(token);
 	if (sortByName) {
 		const collator = new Intl.Collator('en');
 		repos.sort((a, b) => collator.compare(
-			a.node.nameWithOwner.split('/')[1],
-			b.node.nameWithOwner.split('/')[1],
+			a.nameWithOwner.split('/')[1],
+			b.nameWithOwner.split('/')[1],
 		));
 	}
 
-	// TODO [>=1.1.0]: Fix this
-
 	for (const repo of repos) {
 		targets.push({
-			content: repo.node.url + (jumpToReadme ? '#readme' : ''),
-			description: fullRepoName ? repo.node.nameWithOwner : repo.node.nameWithOwner.split('/')[1],
+			content: repo.url + (jumpToReadme ? '#readme' : ''),
+			description: fullRepoName ? repo.nameWithOwner : repo.nameWithOwner.split('/')[1],
 		});
 	}
-
 	console.log('Generated new targets:', targets);
 
 	return targets;

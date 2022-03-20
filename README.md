@@ -18,7 +18,7 @@ in a third-party service or web app.
  * Chrome (not yet available)
  * Opera (not yet available)
 
-## Configuration
+### Configuration
 
 Go the preferences  page (`about:addons` > *Warpgate* >  *Preferences*) to setup
 the extension.
@@ -61,12 +61,15 @@ an  unknown later  point, not  for regular  visits. Warpgate  focuses on  giving
 instant access  to more frequently visited  URLs which are closer  to in-browser
 bookmarks.
 
-## Acknowledgements
+## Contributing
+
+Contributions are welcomed! Please open an issue before submitting substantial changes.
+
+## Acknowledgments
 
 The  font used  for the  logo is  [VAL](https://www.fontfabric.com/fonts/val) by
 [FontFabric](https://www.fontfabric.com).
 
 ## License
 
-This   software    is   distributed   under   the    [Mozilla   Public   License
-2.0](https://www.mozilla.org/en-US/MPL/2.0).
+[Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0)
