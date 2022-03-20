@@ -1,7 +1,8 @@
 import { FETCH_TIMEOUT } from './defaults';
 import { getStorageValue, setStorageValue } from './storage';
 
-export type AnyObject = Record<string, any>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Needed to store the API response
+export type AnyObject = Record<string, any>;
 
 export interface GitHubRepo {
 	nameWithOwner: string;
@@ -15,6 +16,7 @@ export async function getGitHubRepos(token: string | undefined): Promise<GitHubR
 
 	if (!token) {
 		console.error('No token found for the GitHub API');
+
 		return repos;
 	}
 
@@ -46,6 +48,7 @@ async function isLocalRepoListOutdated(token: string, repos: GitHubRepo[]): Prom
 	if (!data) {
 		// If the GitHub API couldn't be reached, keep the local data
 		console.error('Failed to query GitHub API');
+
 		return false;
 	}
 
@@ -86,6 +89,7 @@ async function getStarredReposList(token: string): Promise<GitHubRepo[]> {
 
 		if (!data) {
 			console.error('Failed to query GitHub API');
+
 			return repos;
 		}
 
@@ -96,7 +100,6 @@ async function getStarredReposList(token: string): Promise<GitHubRepo[]> {
 
 		pageInfo = data.viewer.starredRepositories.pageInfo;
 		endCursor = pageInfo.endCursor;
-
 	} while (pageInfo.hasNextPage);
 
 	return repos;
@@ -121,11 +124,13 @@ async function queryGitHubApi(token: string, query: string): Promise<AnyObject |
 		}));
 	} catch (error) {
 		console.error(error);
+
 		return;
 	}
 
 	if (!response.ok) {
 		console.error(response);
+
 		return;
 	}
 
@@ -133,6 +138,7 @@ async function queryGitHubApi(token: string, query: string): Promise<AnyObject |
 		responseJson = await response.json();
 	} catch (error) {
 		console.error(error);
+
 		return;
 	}
 

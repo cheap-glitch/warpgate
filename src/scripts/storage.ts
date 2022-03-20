@@ -5,7 +5,7 @@ type BrowserStorageLocation = 'local' | 'sync';
  * If the key doesn't exist or the value is invalid, return the default value
  */
 export async function getStorageValue<T>(storageLocation: BrowserStorageLocation, key: string): Promise<T | undefined> {
-	let storedValue = undefined;
+	let storedValue;
 
 	try {
 		storedValue = await browser.storage[storageLocation].get(key);

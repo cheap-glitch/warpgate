@@ -1,5 +1,5 @@
-/**
- *                            _____  __
+/*
+ *                             _____  __
  *  _    _____ ________  ___ _/ ___ \/ /____
  * | |/|/ / _ `/ __/ _ \/ _ `/ / _ `/ __/ -_)
  * |__,__/\_,_/_/ / .__/\_, /\ \_,_/\__/\__/
@@ -103,9 +103,6 @@ interface WarpTarget {
 	description: string;
 }
 
-/**
- * Generate a list of targets for the address bar
- */
 async function generateTargets(): Promise<WarpTarget[]> {
 	const targets: WarpTarget[] = [];
 	console.log('Generating new targets...');
