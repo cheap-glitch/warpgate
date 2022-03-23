@@ -12,9 +12,9 @@
  * This software is distributed under the Mozilla Public License 2.0
  */
 
-import { getGitHubRepos } from './github';
-import { getStorageValue } from './storage';
-import { defaultGitHubSettings } from './defaults';
+import { getGitHubRepos } from './lib/github';
+import { getStorageValue } from './lib/storage';
+import { defaultGitHubSettings } from './lib/defaults';
 
 (async () => {
 	// Initialize the list of all possible targets

@@ -1,7 +1,7 @@
 *.env
-*.zip
 /.coverage/
 /.coveralls.yml
+/.parcel-cache/
 /dist/
 /docs/logo/
 /node_modules/

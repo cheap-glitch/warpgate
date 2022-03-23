@@ -1,33 +1,38 @@
 {
 	"manifest_version": 2,
 	"name": "Warpgate",
+	"version": "0.0.0",
 	"description": "Jump to various external bookmarks via the address bar.",
-	"version": "1.1",
-	"applications": {
-		"gecko": {
-			"id": "warpgate--dev@cheap-glitch.org"
-		}
-	},
+  "homepage_url": "https://github.com/cheap-glitch/warpgate#readme",
 	"developer" : {
 		"name": "cheap glitch",
 		"url": "https://github.com/cheap-glitch"
+	},
+	"minimum_chrome_version": "88",
+	"applications": {
+		"gecko": {
+			"id": "warpgate--dev@cheap-glitch.org",
+			"strict_min_version": "84.0"
+		}
 	},
 	"permissions": [
     "notifications",
 		"storage"
 	],
   "icons": {
-    "48": "icon/48x48.png",
-    "96": "icon/96x96.png"
+    "128": "icon.png"
+  },
+  "options_ui": {
+    "chrome_style": true,
+    "browser_style": true,
+    "page": "options.html"
   },
 	"background": {
-		"page": "pages/background.html"
+		"scripts": [
+			"../node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
+			"index.ts"
+		]
 	},
-  "options_ui": {
-    "page": "pages/options.html",
-    "browser_style": true,
-    "chrome_style": true
-  },
 	"omnibox": {
 		"keyword": "@"
 	},

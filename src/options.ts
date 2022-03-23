@@ -1,8 +1,8 @@
 /* eslint-disable unicorn/prefer-query-selector -- The column makes the selector invalid */
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- The option page is fixed */
 
-import { defaultGitHubSettings } from './defaults';
-import { getStorageValue, setStorageValue } from './storage';
+import { defaultGitHubSettings } from './lib/defaults';
+import { getStorageValue, setStorageValue } from './lib/storage';
 
 async function updateTargets(): Promise<void> {
 	const updateMessage = document.getElementById('update-message')!;

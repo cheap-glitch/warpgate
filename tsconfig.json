@@ -1,12 +1,14 @@
 {
   "extends": "@cheap-glitch/tsconfig/index.json",
-  "includes": [
-    "src/**.ts"
+  "files": [
+    "src/index.ts",
+    "src/options.ts"
   ],
   "compilerOptions": {
     "lib": ["es2020", "dom"],
     "target": "es2018",
     "module": "es2020",
-    "outDir": "dist"
+    "outDir": "dist",
+    "isolatedModules": true
   }
 }

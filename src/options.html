@@ -46,7 +46,7 @@
 					<strong>Personal token for the GitHub API</strong>
 					(Don't have a personal token? <a target="_blank" rel="noopener" href="https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user">Generate one</a>)
 				</label>
-				<input  id="github:token" type="text" size="50">
+				<input id="github:token" type="text" size="50">
 			</div>
 
 			<p><strong>Preferences</strong></p>
@@ -88,8 +88,7 @@
 				<a href="mailto:cheap.glitch@gmail.com">drop us a line</a>!
 			</p>
 		</section>
-
-		<script src="../scripts/browser-polyfill.js" type="module"></script>
-		<script src="../scripts/options.js"          type="module"></script>
+		<script src="../node_modules/webextension-polyfill/dist/browser-polyfill.min.js" type="module"></script>
+		<script src="options.ts" type="module"></script>
 	</body>
 </html>
