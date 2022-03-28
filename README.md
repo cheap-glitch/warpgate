@@ -1,8 +1,11 @@
-<p align="center"><img src="./docs/logo.png" alt="Logo of the project."></p>
-
 <div align="center">
-	<img src="https://badgen.net/github/license/cheap-glitch/warpgate" alt="Blue badge displaying the license (MPL 2.0).">
-	<img src="https://badgen.net/github/release/cheap-glitch/warpgate" alt="Blue badge displaying the current version.">
+
+![Logo (light mode)](./docs/logo-dark.png#gh-light-mode-only)
+![Logo (dark mode)](./docs/logo-light.png#gh-dark-mode-only)
+
+![License](https://badgen.net/github/license/cheap-glitch/warpgate?color=blue)
+![Latest release](https://badgen.net/github/release/cheap-glitch/warpgate?color=blue)
+
 </div>
 
 **Warpgate** is  a browser extension which  enables a quick and  painless way to
