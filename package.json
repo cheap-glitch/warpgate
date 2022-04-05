@@ -86,22 +86,29 @@
     }
   },
   "dependencies": {
+    "idb": "^7.0.1",
+    "webext-base-css": "^1.4.0",
+    "webext-options-sync": "^3.0.1",
     "webextension-polyfill": "^0.8.0"
   },
   "devDependencies": {
     "@cheap-glitch/eslint-config-typescript": "^2.4.2",
     "@cheap-glitch/tsconfig": "^1.0.0",
     "@parcel/config-webextension": "^2.4.0",
+    "@parcel/reporter-bundle-analyzer": "^2.4.0",
     "@types/firefox-webext-browser": "^94.0.1",
     "cross-zip": "^4.0.0",
     "del-cli": "^4.0.1",
-    "eslint": "^8.11.0",
+    "eslint": "^8.12.0",
+    "eslint-plugin-jest": "^26.1.3",
     "eslint-plugin-no-unsanitized": "^4.0.1",
-    "eslint-plugin-smarter-tabs": "^1.2.0",
     "jest": "^27.5.1",
     "npm-run-all": "^4.1.5",
-    "parcel": "^2.4.0",
-    "typescript": "^4.6.2",
-    "web-ext": "^6.7.0"
+    "parcel": "^2.4.1",
+    "typescript": "^4.6.3",
+    "web-ext": "^6.8.0",
+    "webext-base-css": "^1.4.0",
+    "webext-options-sync": "^3.0.1",
+    "webextension-polyfill": "^0.8.0"
   }
 }
