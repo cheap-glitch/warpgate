@@ -1,10 +1,10 @@
 <div align="center">
 
-![Logo (light mode)](./docs/logo-dark.png#gh-light-mode-only)
-![Logo (dark mode)](./docs/logo-light.png#gh-dark-mode-only)
+![Logo (light mode)](docs/logo-dark.png#gh-light-mode-only)
+![Logo (dark mode)](docs/logo-light.png#gh-dark-mode-only)
 
-![License](https://badgen.net/github/license/cheap-glitch/warpgate?color=blue)
-![Latest release](https://badgen.net/github/release/cheap-glitch/warpgate?color=blue)
+[![License](https://shields.io/github/license/cheap-glitch/warpgate)](LICENSE)
+[![Latest release](https://shields.io/github/v/release/cheap-glitch/warpgate?sort=semver&label=latest%20release&color=green)](https://github.com/cheap-glitch/warpgate/releases/latest)
 
 </div>
 
@@ -40,7 +40,7 @@ update themselves when you unstar a repo or star a new one.
 Enter the  prefix `@` in  the address  bar, followed by  a space and  the search
 string. Warpgate will suggest matching targets based on your settings.
 
-![usage demo](./docs/demo.gif)
+![usage demo](docs/demo.gif)
 
 The warp targets are  updated every 10 minutes, but if for  some reason you want
 an immediate refresh, press `Alt + W` on your keyboard.
