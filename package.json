@@ -25,7 +25,7 @@
     "webextension"
   ],
   "scripts": {
-    "build": "parcel build src/manifest.json --target webext-prod --no-cache --log-level info",
+    "build": "parcel build src/manifest.json --target webext-prod --no-cache --log-level info --reporter @parcel/reporter-bundle-analyzer",
     "lint": "eslint . --ext .js,.ts --ignore-path .gitignore",
     "prebuild": "del dist",
     "watch": "run-p watch:* --continue-on-error",
