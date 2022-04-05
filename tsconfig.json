@@ -7,7 +7,7 @@
   "compilerOptions": {
     "lib": ["es2020", "dom"],
     "target": "es2018",
-    "module": "es2020",
+    "module": "es2022",
     "outDir": "dist",
     "isolatedModules": true
   }
