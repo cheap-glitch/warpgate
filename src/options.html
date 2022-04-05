@@ -1,94 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<style>
-			.panel-formElements-item-vertical-layout {
-				display: block;
-			}
+<!doctype html>
 
-			.panel-formElements-item-vertical-layout label {
-				display: block;
-				margin-bottom: 8px;
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="../node_modules/webext-base-css/webext-base.css">
+</head>
 
-				text-align: left;
-			}
+<style>
+	input:invalid {
+		border-color: red; /* Highlight invalid fields */
+	}
 
-			.update-message,
-			.preferences-info {
-				font-size: 0.9rem;
-			}
+	input[type="radio"] {
+		vertical-align: middle; /* Fix vertical alignment of radio buttons */
+	}
 
-			.update-message {
-				margin: 0;
-				padding: 0;
+	label:nth-of-type(2) {
+		margin-left: 8px;
+	}
+</style>
 
-				opacity: 0;
-			}
+<form class="detail-view-container">
 
-			.update-message.is-visible {
-				opacity: 1;
-			}
-		</style>
-	</head>
-	<body>
-		<section class="browser-style panel-section panel-section-formElements">
-			<p id="update-message" class="update-message">🛠️🚀 Updating warp targets…</p>
+	<h2>Starred GitHub repos</h2>
 
-			<!-- =============================================== -->
-			<!-- GitHub stars                                    -->
-			<!-- =============================================== -->
-			<h2>Starred GitHub repos 🌟</h2>
+	<p>
+		<label>
+			<strong>Personal Access Token</strong>
+			(Don't have one? <a target="_blank" rel="noopener" href="https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user">Generate it here</a>.)
+			<br>
+			<input
+				type="text"
+				name="personalToken"
+				required
+				autocomplete="off"
+				spellcheck="false"
+				size="50"
+				pattern="ghp_\w{36,251}"
+			>
+		</label>
+	</p>
 
-			<!-- API token -->
-			<div class="panel-formElements-item panel-formElements-item-vertical-layout">
-				<label for="github:token">
-					<strong>Personal token for the GitHub API</strong>
-					(Don't have a personal token? <a target="_blank" rel="noopener" href="https://github.com/settings/tokens/new?description=Warpgate&scopes=read:user">Generate one</a>)
-				</label>
-				<input id="github:token" type="text" size="50">
-			</div>
+	<h3>Preferences</h3>
 
-			<p><strong>Preferences</strong></p>
+	<p>
+		<em>Sort repos by</em>&ensp;
+		<label>
+			<input type="radio" name="sortBy" value="name" checked> name
+		</label>
+		<label>
+			<input type="radio" name="sortBy" value="date"> last starred
+		</label>
+	</p>
 
-			<!-- Sort by name / last added -->
-			<div class="panel-formElements-item">
-				<em>Sort repos by:</em>&ensp;
-				<input  id="github:sortByName:true"  name="github:sortByName" type="radio" checked>
-				<label for="github:sortByName:true"> by name</label>
-				<input  id="github:sortByName:false" name="github:sortByName" type="radio">
-				<label for="github:sortByName:false">by date of addition</label>
-			</div>
+	<p>
+		<em>Search by</em>&ensp;
+		<label>
+			<input type="radio" name="searchBy" value="name" checked> repo name
+		</label>
+		<label>
+			<input type="radio" name="searchBy" value="nameAndOwner"> repo name and owner
+		</label>
+	</p>
 
-			<!-- Full name / repo name only -->
-			<div class="panel-formElements-item">
-				<em>Search and display:</em>&ensp;
-				<input  id="github:fullRepoName:true"  name="github:fullRepoName" type="radio" checked>
-				<label for="github:fullRepoName:true"> the repo name and owner</label>
-				<input  id="github:fullRepoName:false" name="github:fullRepoName" type="radio">
-				<label for="github:fullRepoName:false">the repo name only</label>
-			</div>
+	<p>
+		<em>When opening a new page,</em>&ensp;
+		<label>
+			<input type="radio" name="jumpTo" value="" checked> stay at the top
+		</label>
+		<label>
+			<input type="radio" name="jumpTo" value="#readme"> jump to readme
+		</label>
+		<label>
+			<input type="radio" name="jumpTo" value="/issues"> jump to issues
+		</label>
+	</p>
 
-			<!-- Jump to readme -->
-			<div class="panel-formElements-item">
-				<em>When opening a new page:</em>&ensp;
-				<input  id="github:jumpToReadme:false" name="github:jumpToReadme" type="radio" checked>
-				<label for="github:jumpToReadme:false">stay at the top of the page</label>
-				<input  id="github:jumpToReadme:true"  name="github:jumpToReadme" type="radio">
-				<label for="github:jumpToReadme:true"> jump to the readme</label>
-			</div>
+	<hr>
 
-			<p></p>
-			<div class="panel-section-separator"></div>
-			<p class="preferences-info">💾 ✅ <em>Your settings are automatically saved upon modification.</em></p>
-			<p>
-				Got a suggestion for a new service to connect?
-				<a target="_blank" rel="noopener" href="https://github.com/cheap-glitch/warpgate/issues/new?labels=enhancement&template=feature_request.md">Open a new issue on GitHub</a>
-				or
-				<a href="mailto:cheap.glitch@gmail.com">drop us a line</a>!
-			</p>
-		</section>
-		<script src="../node_modules/webextension-polyfill/dist/browser-polyfill.min.js" type="module"></script>
-		<script src="options.ts" type="module"></script>
-	</body>
-</html>
+	<p>
+		💖 Like <strong>Warpgate</strong>? Support its development <a target="_blank" rel="noopener" href="">by sponsoring me</a>!
+	</p>
+
+	<p>
+		💡 Got a suggestion for a new service to connect?
+		<a
+			target="_blank"
+			rel="noopener"
+			href="https://github.com/cheap-glitch/warpgate/issues/new?labels=enhancement&template=feature_request.md"
+		>
+			Open a new issue on GitHub
+		</a>
+		or
+		<a href="mailto:cheap.glitch@gmail.com">drop me a line</a>.
+	</p>
+
+</form>
+
+<script src="../node_modules/webextension-polyfill/dist/browser-polyfill.min.js" type="module"></script>
+<script src="options.ts" type="module"></script>
