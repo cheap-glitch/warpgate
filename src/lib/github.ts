@@ -1,167 +1,151 @@
-import { FETCH_TIMEOUT } from './defaults';
-import { getStorageValue, setStorageValue } from './storage';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Needed to store the API response
-export type AnyObject = Record<string, any>;
+import { version } from './helpers/browser';
+import { getDatabase } from './database';
+import { timeoutPromise } from './helpers';
+import { optionsStorage } from './options-storage';
 
 export interface GitHubRepo {
-	nameWithOwner: string;
-	url: string;
+	readonly name: string;
+	readonly owner: string;
 }
 
-// Return the list of repos, updated if necessary
-export async function getGitHubRepos(token: string | undefined): Promise<GitHubRepo[]> {
-	let repos: GitHubRepo[] = await getStorageValue('local', 'github:repos') ?? [];
-	console.log('Updating GitHub repos:', repos);
-
-	if (!token) {
-		console.error('No token found for the GitHub API');
-
-		return repos;
+export async function updateGitHubStars(): Promise<void> {
+	const { personalToken } = await optionsStorage.getAll();
+	if (await isLocalRepoListOutdated(personalToken)) {
+		return downloadAllStarredGitHubRepos(personalToken);
 	}
-
-	if (await isLocalRepoListOutdated(token, repos)) {
-		repos = await getStarredReposList(token);
-		await setStorageValue('local', 'github:repos', repos);
-	}
-
-	return repos;
 }
 
-async function isLocalRepoListOutdated(token: string, repos: GitHubRepo[]): Promise<boolean> {
-	console.log('Checking for outdated repos list...');
+async function downloadAllStarredGitHubRepos(personalToken: string): Promise<void> {
+	const repos: GitHubRepo[] = [];
 
-	// Fetch the number of starred repos and the URL of the last starred repo
-	const data = await queryGitHubApi(token, `
-		viewer {
-		    starredRepositories(first: 1, orderBy: { field: STARRED_AT, direction: DESC }) {
-		        totalCount
-		        edges {
-		            node {
-		                url
-		            }
-		        }
-		    }
+	let cursor = 'null';
+	let hasNextPage = true;
+	try {
+		while (hasNextPage) {
+			const { starredRepositories } = await queryGitHubApi(personalToken, `
+				starredRepositories(
+					first: 100,
+					after: ${cursor},
+					orderBy: { field: STARRED_AT, direction: DESC },
+				) {
+					nodes {
+						name
+						owner { login }
+					}
+					pageInfo {
+						endCursor
+						hasNextPage
+					}
+				}
+			`);
+
+			// eslint-disable-next-line @typescript-eslint/no-shadow -- Rule bug?
+			for (const { name, owner } of starredRepositories.nodes) {
+				repos.push({ name, owner: owner.login });
+			}
+
+			cursor = JSON.stringify(starredRepositories.pageInfo.endCursor);
+			hasNextPage = starredRepositories.pageInfo.hasNextPage;
 		}
-	`);
+	} catch (error) {
+		console.error(error);
 
-	if (!data) {
-		// If the GitHub API couldn't be reached, keep the local data
-		console.error('Failed to query GitHub API');
-
-		return false;
+		// Preserve the local data in case of API failure
+		return;
 	}
 
-	const { starredRepositories: starredRepos } = data.viewer;
+	if (repos.length === 0) {
+		return;
+	}
 
-	// Return `true` if the number of starred repos has changed or if the latest repo isn't the same
-	return repos.length !== starredRepos.totalCount || repos[0].url !== starredRepos.edges[0].node.url;
+	const database = await getDatabase();
+	const transaction = database.transaction('starredGitHubRepos', 'readwrite');
+
+	await Promise.all([
+		transaction.store.clear(),
+		...repos.map(repo => transaction.store.add(repo)),
+		transaction.done,
+	]);
+
+	await browser.storage.local.set({
+		lastStarredRepo: repos[0],
+	});
 }
 
-async function getStarredReposList(token: string): Promise<GitHubRepo[]> {
-	console.log('Fetching new repos list...');
+// Return `true` iff the number of starred repos or the name of the last starred repo has changed
+async function isLocalRepoListOutdated(personalToken: string): Promise<boolean> {
+	let starredRepositoriesCount: number;
+	let lastStarredRepo: GitHubRepo;
 
-	let pageInfo;
-	let endCursor;
-
-	const repos = [];
-	do {
-		const data: AnyObject | undefined = await queryGitHubApi(token, `
-			viewer {
-			    starredRepositories(
-			        after: ${endCursor ? `"${endCursor}"` : 'null'},
-			        first: 100,
-			        orderBy: { field: STARRED_AT, direction: DESC },
-			    ) {
-			        edges {
-			            node {
-			                nameWithOwner
-			                url
-			            }
-			        }
-			        pageInfo {
-			            endCursor
-			            hasNextPage
-			        }
-			    }
+	try {
+		const { starredRepositories } = await queryGitHubApi(personalToken, `
+			starredRepositories(first: 1, orderBy: { field: STARRED_AT, direction: DESC }) {
+				totalCount
+				nodes {
+					name
+					owner { login }
+				}
 			}
 		`);
 
-		if (!data) {
-			console.error('Failed to query GitHub API');
-
-			return repos;
-		}
-
-		console.log('Successfully queried GitHub API:', data);
-		for (const edge of data.viewer.starredRepositories.edges) {
-			repos.push(edge.node);
-		}
-
-		pageInfo = data.viewer.starredRepositories.pageInfo;
-		endCursor = pageInfo.endCursor;
-	} while (pageInfo.hasNextPage);
-
-	return repos;
-}
-
-async function queryGitHubApi(token: string, query: string): Promise<AnyObject | undefined> {
-	let response;
-	let responseJson;
-
-	try {
-		response = await timeoutPromise(FETCH_TIMEOUT, fetch('https://api.github.com/graphql', {
-			method: 'POST',
-			body: JSON.stringify({
-				query: `query { ${query} }`,
-			}),
-			headers: {
-				// TODO: Get version number from manifest
-				'User-Agent': 'desktop:org.cheap-glitch:warpgate@1.2.0',
-				'Content-Type': 'application/json',
-				'Authorization': `bearer ${token}`,
-			},
-		}));
+		starredRepositoriesCount = starredRepositories.totalCount;
+		lastStarredRepo = {
+			name: starredRepositories.nodes[0].name,
+			owner: starredRepositories.nodes[0].owner.login,
+		};
 	} catch (error) {
 		console.error(error);
 
-		return;
+		// If the GitHub API couldn't be reached, keep the local data
+		return false;
 	}
+
+	try {
+		const database = await getDatabase();
+		if (await database.count('starredGitHubRepos') !== starredRepositoriesCount) {
+			return true;
+		}
+
+		const repo = await browser.storage.local.get('lastStarredRepo');
+		if (!repo) {
+			return true;
+		}
+
+		return repo.name !== lastStarredRepo.name || repo.owner !== lastStarredRepo.owner;
+	} catch {
+		return false;
+	}
+}
+
+const FETCH_TIMEOUT = 6000;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Needed to store the API response
+type AnyObject = Record<string, any>;
+
+async function queryGitHubApi(personalToken: string, viewerQuery: string): Promise<AnyObject> {
+	const response = await timeoutPromise(FETCH_TIMEOUT, fetch('https://api.github.com/graphql', {
+		method: 'POST',
+		headers: {
+			'User-Agent': `desktop:org.cheap-glitch:warpgate@${version}`,
+			'Content-Type': 'application/json',
+			'Authorization': `bearer ${personalToken}`,
+		},
+		body: JSON.stringify({
+			query: `
+				query {
+					viewer {
+						${viewerQuery}
+					}
+				}
+			`,
+		}),
+	}));
 
 	if (!response.ok) {
-		console.error(response);
-
-		return;
+		throw new Error(String(response));
 	}
 
-	try {
-		responseJson = await response.json();
-	} catch (error) {
-		console.error(error);
+	const { data } = await response.json();
 
-		return;
-	}
-
-	return responseJson.data;
-}
-
-function timeoutPromise<T>(duration: number, promise: Promise<T>): Promise<T> {
-	return new Promise((resolve, reject) => {
-		const timeout = window.setTimeout(
-			() => {
-				reject(new Error('Timeout expired'));
-			},
-			duration,
-		);
-
-		(async () => {
-			try {
-				resolve(await promise);
-			} catch (error) {
-				reject(error);
-			} finally {
-				window.clearTimeout(timeout);
-			}
-		})();
-	});
+	return data?.viewer ?? {};
 }
