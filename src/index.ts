@@ -12,122 +12,29 @@
  * This software is distributed under the Mozilla Public License 2.0
  */
 
-import { getGitHubRepos } from './lib/github';
-import { getStorageValue } from './lib/storage';
-import { defaultGitHubSettings } from './lib/defaults';
+import { search } from './lib/search';
+import { openUrl } from './lib/helpers/browser';
+import { optionsStorage } from './lib/options-storage';
+import { buildGitHubSearchUrl } from './lib/helpers/github';
 
-(async () => {
-	// Initialize the list of all possible targets
-	let targets = await generateTargets();
+browser.omnibox.setDefaultSuggestion({
+	description: '🔍 Search on GitHub',
+});
 
-	// Set the message displayed at the top of the suggestions list
-	browser.omnibox.setDefaultSuggestion({ description: '🚀💫 Warp in progress…' });
+let currentInput = '';
+browser.omnibox.onInputChanged.addListener(async (input, suggest) => {
+	currentInput = input;
+	suggest(await search(input));
+});
 
-	// Suggest URLs in the address bar
-	browser.omnibox.onInputChanged.addListener((text, suggest) => {
-		if (targets.length === 0) {
-			return;
-		}
+browser.omnibox.onInputEntered.addListener(async (url, disposition) => {
+	if (!url.startsWith('https://')) {
+		// If the first "suggestion" is selected, perform a search on GitHub
+		openUrl(buildGitHubSearchUrl(currentInput), disposition);
 
-		// Split the user input to create a list of keywords
-		const keywords = text.trim().toLowerCase().split(/\s+/u);
-
-		suggest(targets
-			// Filter the suggested targets based on the user's input
-			.filter(target => keywords.every(keyword => target.description.toLowerCase().includes(keyword)))
-			// Make sure the list doesn't have more than six suggestions in it
-			.slice(0, 6),
-		);
-	});
-
-	// Perform the correct action when a suggestion is selected by the user
-	browser.omnibox.onInputEntered.addListener((url, disposition) => {
-		// Ignore the first suggestion (the info message)
-		if (!url.startsWith('https://')) {
-			return;
-		}
-
-		// Open the URL according to the user's choice
-		switch (disposition) {
-			case 'currentTab':
-				browser.tabs.update({ url });
-				break;
-			case 'newForegroundTab':
-				browser.tabs.create({ url });
-				break;
-			case 'newBackgroundTab':
-				browser.tabs.create({ url, active: false });
-				break;
-			default:
-				throw new Error(`Unsupported tab disposition setting "${disposition}"`);
-		}
-	});
-
-	// Force a refresh of the local data when the corresponding keyboard command is sent
-	browser.commands.onCommand.addListener(async command => {
-		if (command === 'refresh-data') {
-			await browser.notifications.create('notif-data-refreshed', {
-				type: 'basic',
-				title: 'Updating warp targets ⌛',
-				message: 'Please wait a moment...',
-			});
-
-			targets = await generateTargets();
-
-			await browser.notifications.create('notif-data-refreshed', {
-				type: 'basic',
-				title: 'Warp targets updated! 👍',
-				message: 'The warp targets have been successfully updated.',
-			});
-		}
-	});
-
-	// Refresh the local data every 10 minutes
-	window.setInterval(
-		async () => {
-			targets = await generateTargets();
-		},
-		10 * 60 * 1000,
-	);
-
-	// Refresh the data when an option is modified
-	browser.runtime.onMessage.addListener(async message => {
-		if (message === 'refresh-data') {
-			targets = await generateTargets();
-		}
-	});
-})();
-
-interface WarpTarget {
-	content: string;
-	description: string;
-}
-
-async function generateTargets(): Promise<WarpTarget[]> {
-	const targets: WarpTarget[] = [];
-	console.log('Generating new targets...');
-
-	const token: string | undefined = await getStorageValue('sync', 'github:token');
-	const sortByName = await getStorageValue('sync', 'github:sortByName') ?? defaultGitHubSettings.sortByName;
-	const fullRepoName = await getStorageValue('sync', 'github:fullRepoName') ?? defaultGitHubSettings.fullRepoName;
-	const jumpToReadme = await getStorageValue('sync', 'github:jumpToReadme') ?? defaultGitHubSettings.jumpToReadme;
-
-	const repos = await getGitHubRepos(token);
-	if (sortByName) {
-		const collator = new Intl.Collator('en');
-		repos.sort((a, b) => collator.compare(
-			a.nameWithOwner.split('/')[1],
-			b.nameWithOwner.split('/')[1],
-		));
+		return;
 	}
 
-	for (const repo of repos) {
-		targets.push({
-			content: repo.url + (jumpToReadme ? '#readme' : ''),
-			description: fullRepoName ? repo.nameWithOwner : repo.nameWithOwner.split('/')[1],
-		});
-	}
-	console.log('Generated new targets:', targets);
-
-	return targets;
-}
+	const { jumpTo } = await optionsStorage.getAll();
+	openUrl(url + jumpTo, disposition);
+});
