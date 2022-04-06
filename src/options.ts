@@ -1,11 +1,21 @@
-import { optionsStorage } from './options-storage';
+import { optionsStorage } from './lib/options-storage';
+import { updateGitHubStars } from './lib/github';
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Select the form in options.html
 optionsStorage.syncForm(document.querySelector('form')!);
 
-optionsStorage.syncForm(optionsForm);
-optionsForm.addEventListener('options-sync:form-synced', sendUpdateMessage);
+const refreshButton = document.querySelector('#refresh-github-stars') as HTMLButtonElement;
+refreshButton.addEventListener('click', async () => {
+	refreshButton.disabled = true;
+	refreshButton.textContent = 'Updating GitHub stars, please wait…';
 
-function sendUpdateMessage(): Promise<void> {
-	return browser.runtime.sendMessage('updateWarpTargets');
-}
+	try {
+		await updateGitHubStars();
+	} catch {
+		refreshButton.textContent = 'An error occurred :(';
+	} finally {
+		refreshButton.disabled = false;
+	}
+
+	refreshButton.textContent = 'GitHub stars updated!';
+});
