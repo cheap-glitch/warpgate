@@ -3,8 +3,8 @@
 ![Logo (light mode)](docs/logo-dark.png#gh-light-mode-only)
 ![Logo (dark mode)](docs/logo-light.png#gh-dark-mode-only)
 
-[![License](https://shields.io/github/license/cheap-glitch/warpgate)](LICENSE)
-[![Latest release](https://shields.io/github/v/release/cheap-glitch/warpgate?sort=semver&label=latest%20release&color=green)](https://github.com/cheap-glitch/warpgate/releases/latest)
+[![License](https://shields.io/github/license/cheap-glitch/warpgate?color=ff3acc)](LICENSE)
+[![Latest release](https://shields.io/github/v/release/cheap-glitch/warpgate?sort=semver&label=latest%20release&color=ff3acc)](https://github.com/cheap-glitch/warpgate/releases/latest)
 
 </div>
 
