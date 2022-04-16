@@ -1,7 +1,6 @@
 import { optionsStorage } from './lib/options-storage';
 import { updateGitHubStars } from './lib/github';
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Select the form in options.html
 optionsStorage.syncForm(document.querySelector('form')!);
 
 const refreshButton = document.querySelector('#refresh-github-stars') as HTMLButtonElement;
