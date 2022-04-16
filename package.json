@@ -82,7 +82,7 @@
       "firefoxProfile": "./test/web-ext-profile",
       "chromiumProfile": "./test/web-ext-profile",
       "startUrl": [
-        "about:debugging#/runtime/this-firefox"
+        "about:devtools-toolbox?id=warpgate%40cheap-glitch.org&type=extension"
       ]
     }
   },
