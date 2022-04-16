@@ -12,14 +12,15 @@
  * This software is distributed under the Mozilla Public License 2.0
  */
 
-import { search } from './lib/search';
-import { openUrl } from './lib/helpers/browser';
+import { getDatabase } from './lib/database';
+import { errorToString } from './lib/helpers';
 import { optionsStorage } from './lib/options-storage';
-import { buildGitHubSearchUrl } from './lib/helpers/github';
+import { notify, openUrl } from './lib/helpers/browser';
+import { updateGitHubStars } from './lib/github';
+import { searchGitHubRepos } from './lib/search';
+import { getGitHubSearchUrl } from './lib/helpers/github';
 
-browser.omnibox.setDefaultSuggestion({
-	description: '🔍 Search on GitHub',
-});
+import type { GitHubRepo } from './lib/github';
 
 (async () => {
 	const database = await getDatabase();
@@ -39,6 +40,54 @@ browser.omnibox.setDefaultSuggestion({
 		}
 	}
 
-	const { jumpTo } = await optionsStorage.getAll();
-	openUrl(url + jumpTo, disposition);
-});
+	// Refresh data every 30 minutes
+	window.setInterval(
+		async () => {
+			await updateGitHubRepos();
+		},
+		1000 * 60 * 30,
+	);
+
+	browser.omnibox.setDefaultSuggestion({
+		description: '🔍 Search on GitHub',
+	});
+
+	browser.omnibox.onInputStarted.addListener(async () => {
+		if (!repos || repos.length === 0) {
+			await updateGitHubRepos();
+		}
+	});
+
+	browser.omnibox.onInputChanged.addListener((input, suggest) => {
+		currentInput = input;
+		suggest(searchGitHubRepos(repos ?? [], input));
+	});
+
+	browser.omnibox.onInputEntered.addListener(async (url, disposition) => {
+		if (!url.startsWith('https://')) {
+			// If the first "suggestion" is selected, perform a search on GitHub
+			openUrl(getGitHubSearchUrl(currentInput), disposition);
+
+			return;
+		}
+
+		const { jumpTo } = await optionsStorage.getAll();
+		openUrl(url + jumpTo, disposition);
+	});
+
+	browser.commands.onCommand.addListener(async command => {
+		if (command !== 'refresh') {
+			return;
+		}
+
+		await notify('⏳ Updating warp targets', 'This can take a while. Please wait a moment…');
+
+		try {
+			await updateGitHubStars();
+			await updateGitHubRepos();
+			await notify('✅ Update complete', 'The warp targets have been successfully updated.');
+		} catch (error) {
+			await notify('❌ An error occurred', errorToString(error));
+		}
+	});
+})();

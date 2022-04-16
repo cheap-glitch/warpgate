@@ -22,3 +22,7 @@ export function timeoutPromise<T>(duration: number, promise: Promise<T>): Promis
 		})();
 	});
 }
+
+export function errorToString(error: unknown): string {
+	return error instanceof Error ? error.message : String(error);
+}
