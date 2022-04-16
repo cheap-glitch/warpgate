@@ -2,7 +2,7 @@
   "private": true,
   "name": "warpgate",
   "version": "1.1.0",
-  "description": "A lightweight browser extension to jump to various external bookmarks via the address bar.",
+  "description": "A lightweight browser extension to jump to various external bookmarks from the address bar.",
   "license": "MPL-2.0",
   "author": "cheap glitch <cheap.glitch@gmail.com> (https://github.com/cheap-glitch)",
   "repository": "cheap-glitch/warpgate",

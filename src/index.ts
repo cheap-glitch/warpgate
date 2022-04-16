@@ -5,8 +5,8 @@
  * |__,__/\_,_/_/ / .__/\_, /\ \_,_/\__/\__/
  *               /_/   /___/  \___/
  *
- * A lightweight browser extension to jump to various external bookmarks via the
- * address bar.
+ * A lightweight browser extension to jump to various external bookmarks from
+ * the address bar.
  *
  * Copyright (c) 2020-present, cheap glitch
  * This software is distributed under the Mozilla Public License 2.0
