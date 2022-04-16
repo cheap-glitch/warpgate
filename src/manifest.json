@@ -4,22 +4,22 @@
   "version": "0.0.0",
   "description": "Jump to various external bookmarks from the address bar.",
   "homepage_url": "https://github.com/cheap-glitch/warpgate#readme",
-	"developer" : {
-		"name": "cheap glitch",
-		"url": "https://github.com/cheap-glitch"
-	},
-	"minimum_chrome_version": "88",
-	"applications": {
-		"gecko": {
-			"id": "warpgate--dev@cheap-glitch.org",
-			"strict_min_version": "84.0"
-		}
-	},
-	"permissions": [
+  "developer" : {
+    "name": "cheap glitch",
+    "url": "https://github.com/cheap-glitch"
+  },
+  "minimum_chrome_version": "88",
+  "applications": {
+    "gecko": {
+      "id": "warpgate@cheap-glitch.org",
+      "strict_min_version": "84.0"
+    }
+  },
+  "permissions": [
     "notifications",
     "storage",
-		"unlimitedStorage"
-	],
+    "unlimitedStorage"
+  ],
   "icons": {
     "128": "icon.png"
   },
@@ -27,15 +27,22 @@
     "chrome_style": true,
     "page": "options.html"
   },
-	"background": {
-    "persistent": false,
-		"scripts": [
-			"../node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
-      "lib/options-storage.ts",
-			"index.ts"
-		]
-	},
-	"omnibox": {
-		"keyword": "@"
-	}
+  "background": {
+    "persistent": true,
+    "scripts": [
+      "../node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
+      "index.ts"
+    ]
+  },
+  "commands": {
+    "refresh": {
+      "suggested_key": {
+        "default": "Alt+W"
+      },
+      "description": "Update the warp targets"
+    }
+  },
+  "omnibox": {
+    "keyword": "@"
+  }
 }
