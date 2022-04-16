@@ -4,21 +4,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 	<link rel="stylesheet" href="../node_modules/webext-base-css/webext-base.css">
+	<link rel="stylesheet" href="options.css">
 </head>
-
-<style>
-	input:invalid {
-		border-color: red; /* Highlight invalid fields */
-	}
-
-	input[type="radio"] {
-		vertical-align: middle; /* Fix vertical alignment of radio buttons */
-	}
-
-	label:nth-of-type(2) {
-		margin-left: 8px;
-	}
-</style>
 
 <form class="detail-view-container">
 
@@ -38,13 +25,15 @@
 				size="50"
 				pattern="ghp_\w{36,251}"
 			>
+			<span id="token-status"></span>
 		</label>
 	</p>
 
-	<button id="refresh-github-repos">Refresh GitHub stars</button>
+	<button id="refresh">Refresh GitHub stars</button>
 
 	<h3>Preferences</h3>
 
+	<!--
 	<p>
 		<em>Sort repos by</em>&ensp;
 		<label>
@@ -54,7 +43,9 @@
 			<input type="radio" name="sortBy" value="date"> last starred
 		</label>
 	</p>
+	-->
 
+	<!--
 	<p>
 		<em>Search by</em>&ensp;
 		<label>
@@ -64,6 +55,7 @@
 			<input type="radio" name="searchBy" value="nameAndOwner"> repo name and owner
 		</label>
 	</p>
+	-->
 
 	<p>
 		<em>When opening a new page,</em>&ensp;
@@ -99,5 +91,4 @@
 
 </form>
 
-<script src="../node_modules/webextension-polyfill/dist/browser-polyfill.min.js" type="module"></script>
 <script src="options.ts" type="module"></script>
