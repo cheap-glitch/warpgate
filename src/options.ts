@@ -1,3 +1,5 @@
+import 'typed-query-selector';
+
 import { optionsStorage } from './lib/options-storage';
 import { updateGitHubStars } from './lib/github';
 
