@@ -5,4 +5,5 @@
 /dist/
 /docs/logo/
 /node_modules/
+/parcel-bundle-reports/
 /test/web-ext-profile/
