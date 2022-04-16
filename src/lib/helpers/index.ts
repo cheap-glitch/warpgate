@@ -1,3 +1,7 @@
+import { version } from './browser';
+
+export const userAgent = 'desktop:org.cheap-glitch:warpgate@' + version;
+
 export function timeoutPromise<T>(duration: number, promise: Promise<T>): Promise<T> {
 	return new Promise((resolve, reject) => {
 		const timeout = window.setTimeout(

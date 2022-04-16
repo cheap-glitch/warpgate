@@ -1,7 +1,6 @@
-import { version } from './helpers/browser';
 import { getDatabase } from './database';
-import { timeoutPromise } from './helpers';
 import { optionsStorage } from './options-storage';
+import { userAgent, timeoutPromise } from './helpers';
 
 export interface GitHubRepo {
 	readonly name: string;
@@ -135,7 +134,7 @@ async function queryGitHubApi(personalToken: string, viewerQuery: string): Promi
 	const response = await timeoutPromise(FETCH_TIMEOUT, fetch('https://api.github.com/graphql', {
 		method: 'POST',
 		headers: {
-			'User-Agent': `desktop:org.cheap-glitch:warpgate@${version}`,
+			'User-Agent': userAgent,
 			'Content-Type': 'application/json',
 			'Authorization': `bearer ${personalToken}`,
 		},
