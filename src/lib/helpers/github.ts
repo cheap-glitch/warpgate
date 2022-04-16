@@ -1,11 +1,20 @@
-export function buildGitHubSearchUrl(search: string): string {
+import type { GitHubRepo } from '../github';
+
+export function getGitHubSearchUrl(search: string): string {
 	return 'https://github.com/search?q=' + encodeURIComponent(search);
 }
 
-export function buildGitHubRepoUrl(owner: string, repoName: string): string {
-	return 'https://github.com/' + buildGitHubRepoID(owner, repoName);
+export function getGitHubRepoSuggestion(repo: GitHubRepo): browser.omnibox.SuggestResult {
+	return {
+		content: getGitHubRepoUrl(repo),
+		description: repo.name,
+	};
 }
 
-export function buildGitHubRepoID(owner: string, repoName: string): string {
+function getGitHubRepoUrl(repo: GitHubRepo): string {
+	return 'https://github.com/' + getGitHubRepoID(repo);
+}
+
+function getGitHubRepoID({ owner, name: repoName }: GitHubRepo): string {
 	return owner + '/' + repoName;
 }
