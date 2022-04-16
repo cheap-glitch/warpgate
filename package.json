@@ -31,7 +31,7 @@
     "lint:webext": "web-ext lint",
     "prebuild": "del dist",
     "watch": "run-p watch:* --continue-on-error",
-    "watch:build": "parcel src/manifest.json --host localhost --target webext-dev",
+    "watch:build": "parcel watch src/manifest.json --host localhost --target webext-dev",
     "watch:typescript": "tsc --noEmit --watch --preserveWatchOutput"
   },
   "targets": {
