@@ -6,6 +6,7 @@ import { optionsStorage } from './options-storage';
 export interface GitHubRepo {
 	readonly name: string;
 	readonly owner: string;
+	readonly starredAt: string;
 }
 
 export async function updateGitHubStars(): Promise<void> {
@@ -28,9 +29,12 @@ async function downloadAllStarredGitHubRepos(personalToken: string): Promise<voi
 					after: ${cursor},
 					orderBy: { field: STARRED_AT, direction: DESC },
 				) {
-					nodes {
-						name
-						owner { login }
+					edges {
+						starredAt
+						node {
+							name
+							owner { login }
+						}
 					}
 					pageInfo {
 						endCursor
@@ -39,9 +43,12 @@ async function downloadAllStarredGitHubRepos(personalToken: string): Promise<voi
 				}
 			`);
 
-			// eslint-disable-next-line @typescript-eslint/no-shadow -- Rule bug?
-			for (const { name, owner } of starredRepositories.nodes) {
-				repos.push({ name, owner: owner.login });
+			for (const { starredAt, node: repo } of starredRepositories.edges) {
+				repos.push({
+					name: repo.name,
+					owner: repo.owner.login,
+					starredAt,
+				});
 			}
 
 			cursor = JSON.stringify(starredRepositories.pageInfo.endCursor);
@@ -92,6 +99,8 @@ async function isLocalRepoListOutdated(personalToken: string): Promise<boolean> 
 		lastStarredRepo = {
 			name: starredRepositories.nodes[0].name,
 			owner: starredRepositories.nodes[0].owner.login,
+			// TODO: Use `starredAt` too?
+			starredAt: '',
 		};
 	} catch (error) {
 		console.error(error);

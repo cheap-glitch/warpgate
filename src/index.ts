@@ -21,18 +21,22 @@ browser.omnibox.setDefaultSuggestion({
 	description: '🔍 Search on GitHub',
 });
 
-let currentInput = '';
-browser.omnibox.onInputChanged.addListener(async (input, suggest) => {
-	currentInput = input;
-	suggest(await search(input));
-});
+(async () => {
+	const database = await getDatabase();
+	let currentInput = '';
+	let repos: GitHubRepo[] | undefined;
 
-browser.omnibox.onInputEntered.addListener(async (url, disposition) => {
-	if (!url.startsWith('https://')) {
-		// If the first "suggestion" is selected, perform a search on GitHub
-		openUrl(buildGitHubSearchUrl(currentInput), disposition);
+	// TODO: Rename function
+	async function updateGitHubRepos(): Promise<void> {
+		const { sortBy } = await optionsStorage.getAll();
 
-		return;
+		// TODO: Show notification (or at least log the error) + same in options.ts
+		if (sortBy === 'starredAt') {
+			repos = await database.getAllFromIndex('starredGitHubRepos', 'starredAt');
+			repos.reverse();
+		} else {
+			repos = await database.getAll('starredGitHubRepos');
+		}
 	}
 
 	const { jumpTo } = await optionsStorage.getAll();

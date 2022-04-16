@@ -1,15 +1,16 @@
 import OptionsSync from 'webext-options-sync';
 
-import { getDatabase } from './database';
+import type { Options as WebextOptions } from 'webext-options-sync';
 
-(async () => {
-	const database = await getDatabase();
-	console.log(await database.getAll('starredGitHubRepos'));
-})();
+interface Options extends WebextOptions {
+	personalToken: string;
+	sortBy: 'name' | 'starredAt';
+	jumpTo: '' | '#readme' | '/issues';
+}
 
-const defaults = {
+const defaults: Options = {
 	personalToken: '',
-	// SortBy: 'name',
+	sortBy: 'name',
 	jumpTo: '',
 };
 
