@@ -1,8 +1,7 @@
 {
   "extends": "@cheap-glitch/tsconfig/index.json",
-  "files": [
-    "src/index.ts",
-    "src/options.ts"
+  "includes": [
+    "src/**/*.ts"
   ],
   "compilerOptions": {
     "lib": ["es2020", "dom"],

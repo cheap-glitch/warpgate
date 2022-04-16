@@ -64,7 +64,7 @@
     "overrides": [
       {
         "files": [
-          "src/options.ts"
+          "src/options/options.ts"
         ],
         "rules": {
           "@typescript-eslint/no-non-null-assertion": "off"
